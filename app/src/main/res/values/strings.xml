@@ -6,6 +6,7 @@
 
     <!--error-->
     <string name="something_wrong">Something went wrong</string>
+    <string name="underDev">Under development</string>
 
     <!--session logout-->
     <string name="ok">OK</string>
