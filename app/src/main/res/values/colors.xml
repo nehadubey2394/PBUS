@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#155fad</color>
+    <color name="colorPrimaryDark">#155fad</color>
+    <color name="colorAccent">#155fad</color>
+
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="grey">#818181</color>
+    <color name="grey2">#828282</color>
+
+    <color name="whoYouAre">#002153</color>
+    <color name="loginText">#333333</color>
+
+</resources>

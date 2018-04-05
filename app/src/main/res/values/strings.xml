@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">PBUS</string>
+
+    <string name="loading">Loading....</string>
+
+
+    <!--error-->
+    <string name="something_wrong">Something went wrong</string>
+
+    <!--session logout-->
+    <string name="ok">OK</string>
+    <string name="session_expired">Session Expired</string>
+    <string name="your_session_is_expired_please_login_again">Your session is expired please login again</string>
+    <string name="who_you_are">Who You Are ?</string>
+    <string name="seller">Seller</string>
+    <string name="driver">Driver</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="remember_me">Remember Me</string>
+    <string name="forgot_password">Forgot Password ?</string>
+    <string name="login">Login</string>
+</resources>

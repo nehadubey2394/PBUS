@@ -1,0 +1,355 @@
+package com.pbus.utility;
+
+import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.StatFs;
+import android.support.design.widget.Snackbar;
+import android.util.Base64;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.NetworkResponse;
+import com.android.volley.NoConnectionError;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
+import com.pbus.R;
+import com.pbus.snackBarPackage.TSnackbar;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
+import java.security.MessageDigest;
+import java.util.Calendar;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
+
+/**
+ * Created by mindiii on 5/4/18.
+ */
+
+public class Util {
+
+    public static void showToast(Context context, String message, int len) {
+        Toast.makeText(context, message, len).show();
+    }
+
+    public static void e(String tag , String msg){
+         Log.e(tag,msg);
+    }
+
+    public static void hideSoftKeyboard(Activity activity) {
+        try {
+            InputMethodManager inputManager = (InputMethodManager) activity.getSystemService(INPUT_METHOD_SERVICE);
+            if (inputManager != null) {
+                inputManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public static String getCurrentDate() {
+        final Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH)+1;
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        return (day + "-" + month + "-" + year);
+
+    }
+
+    public static String getCurrentTime() {
+        final Calendar c = Calendar.getInstance();
+        int hour = c.get(Calendar.HOUR_OF_DAY);
+        int minute = c.get(Calendar.MINUTE);
+        return (hour + ":" + minute);
+    }
+
+    public static boolean isPasswordMatching(String password, String confirmPassword) {
+        Pattern pattern = Pattern.compile(password, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(confirmPassword);
+
+        return matcher.matches();
+    }
+
+    public static String getHashKey(String packageName, Activity context) {
+        PackageInfo info;
+        String something = "";
+        try {
+            info = context.getPackageManager().getPackageInfo(packageName, PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md;
+                md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                something = new String(Base64.encode(md.digest(), 0));
+
+                Util.e("hash key", something);
+            }
+        } catch (Exception e1) {
+            Util.e("name not found", e1.toString());
+        }
+        return something;
+    }
+
+    public static void writeFile(String fileUrl, String filepath) {
+        int count;
+        InputStream input;
+        OutputStream output;
+        try {
+            URL url = new URL(fileUrl);
+            URLConnection connection = url.openConnection();
+            connection.connect();
+
+            input = new BufferedInputStream(url.openStream(), 8192);
+
+            File dir = Environment.getExternalStorageDirectory();
+
+            output = new FileOutputStream(dir + filepath);
+
+            byte data[] = new byte[4096];
+            while ((count = input.read(data)) != -1) {
+                output.write(data, 0, count);
+            }
+            output.flush();
+            output.close();
+            input.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public static StringBuilder readFile(String filename) {
+
+        StringBuilder offlineText = new StringBuilder();
+
+        File dir = Environment.getExternalStorageDirectory();
+
+        File filepath = new File(dir, filename);
+
+        if (filepath.exists()) {
+
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(filepath), 8192);
+                String line;
+
+                while ((line = br.readLine()) != null) {
+                    offlineText.append(line);
+                }
+                br.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            Util.e("File Doesn't Exists!!!", ">>>>>>>>>");
+        }
+
+        return offlineText;
+
+    }
+
+    public static void customToast(final Context activity, final String msg) {
+        // final Dialog dialog = new Dialog(activity, R.style.DialogFadeAnim);
+        final Dialog dialog = new Dialog(activity);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.custom_toast_layout);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+
+        TextView message =  dialog.findViewById(R.id.dialog_message);
+        message.setText(msg);
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                dialog.dismiss();
+            }
+        }, 2000);
+
+        dialog.show();
+    }
+
+    public static void downloadFileFromServer(String fileURL, String fileName) {
+
+        StatFs stat_fs = new StatFs(Environment.getExternalStorageDirectory().getPath());
+        double avail_sd_space = (double) stat_fs.getAvailableBlocks() * (double) stat_fs.getBlockSize();
+
+        double MB_Available = (avail_sd_space / 10485783);
+
+        Util.e("MB", "" + MB_Available);
+        try {
+
+            URL u = new URL(fileURL);
+            HttpURLConnection c = (HttpURLConnection) u.openConnection();
+            c.setRequestMethod("GET");
+            c.setDoOutput(true);
+            c.connect();
+            int fileSize = c.getContentLength() / 1048576;
+
+            if (MB_Available <= fileSize) {
+                c.disconnect();
+                return;
+            }
+
+            try {
+                FileOutputStream f = new FileOutputStream(new File(fileName));
+                InputStream in = c.getInputStream();
+                byte[] buffer = new byte[1024];
+                int len1 = 0;
+                while ((len1 = in.read(buffer)) > 0) {
+                    f.write(buffer, 0, len1);
+                }
+                f.close();
+            } catch (Exception e) {
+
+                e.printStackTrace();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+    }
+
+    public static boolean isNetworkAvailable(Context context, View coordinatorLayout) {
+        ConnectivityManager connec = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        // Check for network connections
+        if (connec.getNetworkInfo(0).getState() == NetworkInfo.State.CONNECTED ||
+                connec.getNetworkInfo(0).getState() == NetworkInfo.State.CONNECTING ||
+                connec.getNetworkInfo(1).getState() == NetworkInfo.State.CONNECTING ||
+                connec.getNetworkInfo(1).getState() == NetworkInfo.State.CONNECTED) {
+
+            // if connected with internet
+            return true;
+
+        } else if (connec.getNetworkInfo(0).getState() == NetworkInfo.State.DISCONNECTED ||
+                        connec.getNetworkInfo(1).getState() == NetworkInfo.State.DISCONNECTED) {
+
+            Snackbar snackbar = Snackbar
+                    .make(coordinatorLayout, "No internet connection!", Snackbar.LENGTH_SHORT)
+                    .setAction("RETRY", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                        }
+                    });
+            snackbar.setActionTextColor(Color.RED);
+            View sbView = snackbar.getView();
+            TextView textView = sbView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextColor(Color.YELLOW);
+            snackbar.show();
+            return false;
+        }
+        return false;
+    }
+
+    public static boolean isNetworkAvailableTop(Context context, View coordinatorLayout) {
+        ConnectivityManager connec = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        // Check for network connections
+        if (connec.getNetworkInfo(0).getState() == NetworkInfo.State.CONNECTED ||
+                connec.getNetworkInfo(0).getState() == NetworkInfo.State.CONNECTING ||
+                connec.getNetworkInfo(1).getState() == NetworkInfo.State.CONNECTING ||
+                connec.getNetworkInfo(1).getState() == NetworkInfo.State.CONNECTED) {
+
+            // if connected with internet
+            return true;
+
+        } else if (connec.getNetworkInfo(0).getState() == NetworkInfo.State.DISCONNECTED ||
+                        connec.getNetworkInfo(1).getState() == NetworkInfo.State.DISCONNECTED) {
+
+            TSnackbar snackbar = TSnackbar
+                    .make(coordinatorLayout, "No internet connection!", TSnackbar.LENGTH_LONG)
+                    .setAction("RETRY", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    });
+            snackbar.setActionTextColor(Color.RED);
+            View snackbarView = snackbar.getView();
+            snackbarView.setBackgroundColor(Color.parseColor("#0000CC"));
+            TextView textView =  snackbarView.findViewById(R.id.snackbar_text);
+            textView.setTextColor(Color.YELLOW);
+            snackbar.show();
+            return false;
+        }
+        return false;
+    }
+
+    public static void snackbar(View coordinatorLayout, String message) {
+
+        Snackbar snackbar = Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_LONG);
+        View sbView = snackbar.getView();
+        TextView textView =  sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(Color.parseColor("#1976d2"));
+        textView.setGravity(Gravity.CENTER);
+        snackbar.setActionTextColor(Color.parseColor("#1976d2"));
+        sbView.setBackgroundColor(Color.WHITE);
+        snackbar.show();
+
+    }
+
+    public static void snackbarTop(View coordinatorLayout, String message) {
+
+        TSnackbar snackbar = TSnackbar
+                .make(coordinatorLayout, message, TSnackbar.LENGTH_LONG);
+        snackbar.setActionTextColor(Color.parseColor("#FF419CF5"));
+        View snackbarView = snackbar.getView();
+        snackbarView.setBackgroundColor(Color.parseColor("#FF419CF5"));
+        TextView textView =  snackbarView.findViewById(R.id.snackbar_text);
+        textView.setTextColor(Color.WHITE);
+        snackbar.show();
+    }
+
+    public static boolean isConnectingToInternet(Context context) {
+
+        ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity != null) {
+            NetworkInfo[] info = connectivity.getAllNetworkInfo();
+
+            if (info != null)
+
+                for (NetworkInfo anInfo : info)
+                {
+                    if (anInfo.getState() == NetworkInfo.State.CONNECTED) {
+                        return true;
+                    }
+                }
+        }
+
+        return false;
+    }
+
+}
