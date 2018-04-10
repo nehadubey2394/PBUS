@@ -2,6 +2,7 @@ package com.pbus.volleymultipart;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -20,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.pbus.R;
 import com.pbus.helper.SessionManager;
+import com.pbus.utility.MyToast;
 import com.pbus.utility.Progress;
 import com.pbus.utility.Util;
 
@@ -38,8 +40,9 @@ public abstract class VolleyGetPost {
     private String TAG;
     private int retryTime=20000;
     private String url;
-    private Boolean isMethodPost,isDialogShow=false;
+    private Boolean isMethodPost;
     private Activity activity;
+
 
     public VolleyGetPost(Activity activity, String url,Boolean isMethodPost,String TAG){
         this.activity=activity;
@@ -67,88 +70,7 @@ public abstract class VolleyGetPost {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             Progress.hide(activity);
-                            NetworkResponse networkResponse = error.networkResponse;
-                            String errorMessage;
-
-                            if (networkResponse == null) {
-                                if (error.getClass().equals(TimeoutError.class)) {
-                                    errorMessage = "Request timeout";
-                                    Util.showToast(activity, errorMessage, Toast.LENGTH_SHORT);
-                                } else if (error.getClass().equals(NoConnectionError.class)) {
-                                    errorMessage = "Failed to connect server, please try again";
-                                    Util.showToast(activity, errorMessage, Toast.LENGTH_SHORT);
-                                }
-                            } else {
-                                String result = new String(networkResponse.data);
-                                try {
-                                    JSONObject response = new JSONObject(result);
-                                    String status = response.getString("responseCode");
-                                    String message = response.getString("message");
-
-                                    Util.e("Error Status", "" + status);
-                                    Util.e("Error Message", message);
-                                    errorMessage = message;
-
-                                    if (status.equals("300")) {
-                                        try {
-                                            if (isDialogShow) {
-                                                return;
-                                            }
-
-                                            final Dialog dialog = new Dialog(activity);
-
-                                            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                                            dialog.setContentView(R.layout.dialog_session_expire);
-                                            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                                            dialog.setCancelable(false);
-                                            dialog.setCanceledOnTouchOutside(false);
-
-                                            dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-
-                                            dialog.findViewById(R.id.okLay).setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    dialog.dismiss();
-                                                    SessionManager.getInstance().logout(activity);
-                                                }
-                                            });
-
-                                            dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                                                @Override
-                                                public void onDismiss(DialogInterface dialog) {
-                                                    isDialogShow = false;
-                                                }
-                                            });
-
-                                            dialog.show();
-                                              isDialogShow = true;
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                    }else{
-                                        Util.showToast(activity, errorMessage, Toast.LENGTH_SHORT);
-                                    }
-                                    /*else if (!(errorMessage.equals("Invalid Auth Token"))) {
-                                        Util.showToast(activity, errorMessage, Toast.LENGTH_SHORT);
-                                    }
-                                    if (networkResponse.statusCode == 300) {
-                                        errorMessage = message + "Please login again";
-                                    }
-                                    else if (networkResponse.statusCode == 404) {
-                                        errorMessage = "Resource not found";
-                                    } else if (networkResponse.statusCode == 401) {
-                                        errorMessage = message + " Please login again";
-                                    } else if (networkResponse.statusCode == 400) {
-                                        errorMessage = message + " Check your inputs";
-                                    } else if (networkResponse.statusCode == 500) {
-                                        errorMessage = message + "Ooops! Something went wrong,";
-                                    }*/
-
-                                } catch (JSONException e) {
-                                    Util.showToast(activity,activity.getResources().getString(R.string.something_wrong),0);
-                                    e.printStackTrace();
-                                }
-                            }
+                            volleyErrorHandle(error);
                         }
                     }) {
 
@@ -172,6 +94,47 @@ public abstract class VolleyGetPost {
         }else{
             onNetError();
         }
+    }
+
+    private void volleyErrorHandle(VolleyError error){
+        NetworkResponse networkResponse = error.networkResponse;
+        String errorMessage = "Unknown error";
+        if (networkResponse == null) {
+            if (error.getClass().equals(TimeoutError.class)) {
+                errorMessage = "Request timeout";
+            } else if (error.getClass().equals(NoConnectionError.class)) {
+                errorMessage = "Failed to connect server, please try again";
+            }
+            MyToast.getInstance(activity).showCustomAlert("Alert",errorMessage);
+        } else {
+            String result = new String(networkResponse.data);
+            try {
+                JSONObject response = new JSONObject(result);
+                String status = response.getString("responseCode");
+                String message = response.getString("message");
+
+                Util.e("Error Status", "" + status);
+                Util.e("Error Message", message);
+
+                if (status.equals("300")) {
+
+                    MyToast.getInstance(activity).showLogoutAlert(activity.getResources().getString(R.string.session_expired),activity.getResources().getString(R.string.your_session_is_expired_please_login_again));
+                    SessionManager.getInstance().logout(activity);
+
+                } else if (networkResponse.statusCode == 404) {
+                    errorMessage = "Resource not found";
+                }  else if (networkResponse.statusCode == 500) {
+                    errorMessage = message + "Oops! Something went wrong";
+                }else {
+                    errorMessage = ServerResponseCode.getmeesageCode(networkResponse.statusCode);
+                }
+                MyToast.getInstance(activity).showCustomAlert("Alert",errorMessage);
+            } catch (JSONException e) {
+                MyToast.getInstance(activity).showCustomAlert("Alert",activity.getResources().getString(R.string.something_wrong));
+                e.printStackTrace();
+            }
+        }
+
     }
 
     /***

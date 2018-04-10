@@ -29,10 +29,10 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
     private Map<String, String> mHeaders;
 
     /**
-     * Default constructor with predefined header and post method.
+     * Default constructor with predefined custom_toolbar and post method.
      *
      * @param url           request destination
-     * @param headers       predefined custom header
+     * @param headers       predefined custom custom_toolbar
      * @param listener      on success achieved 200 code from request
      * @param errorListener on error http or library timeout
      */
@@ -46,7 +46,7 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
     }
 
     /**
-     * Constructor with option method and default header configuration.
+     * Constructor with option method and default custom_toolbar configuration.
      *
      * @param method        method for now accept POST and GET only
      * @param url           request destination
@@ -162,7 +162,7 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
     }
 
     /**
-     * Write string data into header and data output stream.
+     * Write string data into custom_toolbar and data output stream.
      *
      * @param dataOutputStream data output stream handle string parsing
      * @param parameterName    name of input
@@ -178,7 +178,7 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
     }
 
     /**
-     * Write data file into header and data output stream.
+     * Write data file into custom_toolbar and data output stream.
      *
      * @param dataOutputStream data output stream handle data parsing
      * @param dataFile         data byte as DataPart from collection

@@ -1,12 +1,18 @@
 package com.pbus.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
 import com.pbus.R;
+import com.pbus.utility.MyToast;
 import com.pbus.utility.Util;
+import com.pbus.volleymultipart.VolleyGetPost;
+
+import java.sql.Driver;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -32,7 +38,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
 
             case R.id.tvLogin:
-                Util.customToast(context,getResources().getString(R.string.underDev));
+                MyToast.getInstance(context).customToast(getResources().getString(R.string.underDev));
+                Intent i=new Intent(context, DriverHomeActivity.class);
+                startActivity(i);
                 break;
         }
     }

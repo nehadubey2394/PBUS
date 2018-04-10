@@ -3,6 +3,7 @@
     <color name="colorPrimary">#155fad</color>
     <color name="colorPrimaryDark">#155fad</color>
     <color name="colorAccent">#155fad</color>
+<color name="primaryLight">#6599cf</color>
 
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
@@ -12,5 +13,8 @@
 
     <color name="whoYouAre">#002153</color>
     <color name="loginText">#333333</color>
+
+    <color name="custom_alert_bg_color">#B34c3549</color>
+
 
 </resources>

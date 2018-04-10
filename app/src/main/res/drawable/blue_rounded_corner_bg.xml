@@ -6,6 +6,6 @@
         android:radius="@dimen/_40sdp"/>
     <stroke
         android:width="1dip"
-        android:color="@color/colorPrimaryDark" />
+        android:color="@color/colorPrimary" />
 
 </shape>

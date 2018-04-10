@@ -6,6 +6,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor">@color/transparent</item>
     </style>
 
     <style name="DialogAnimation">
@@ -20,13 +22,7 @@
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
-    <style name="MyStatusBarColor" parent="AppTheme">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimary</item>
-        <item name="colorAccent">@color/white</item>
-        <item name="android:windowLightStatusBar">true</item>
-        <item name="android:statusBarColor">@color/transparent</item>
-    </style>
+
 
     <style name="MyTextTheme" parent="AppTheme">
         <item name="android:textColorHint">@color/loginText</item>

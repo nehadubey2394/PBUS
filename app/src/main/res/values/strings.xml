@@ -20,4 +20,8 @@
     <string name="remember_me">Remember Me</string>
     <string name="forgot_password">Forgot Password ?</string>
     <string name="login">Login</string>
+    <string name="alert">Alert!</string>
+    <string name="no_bus">No Bus</string>
+    <string name="from">From</string>
+    <string name="source_location">Source Location</string>
 </resources>

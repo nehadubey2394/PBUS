@@ -57,10 +57,6 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class Util {
 
-    public static void showToast(Context context, String message, int len) {
-        Toast.makeText(context, message, len).show();
-    }
-
     public static void e(String tag , String msg){
          Log.e(tag,msg);
     }
@@ -177,29 +173,6 @@ public class Util {
 
     }
 
-    public static void customToast(final Context activity, final String msg) {
-        // final Dialog dialog = new Dialog(activity, R.style.DialogFadeAnim);
-        final Dialog dialog = new Dialog(activity);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.custom_toast_layout);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-
-        TextView message =  dialog.findViewById(R.id.dialog_message);
-        message.setText(msg);
-
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                dialog.dismiss();
-            }
-        }, 2000);
-
-        dialog.show();
-    }
-
     public static void downloadFileFromServer(String fileURL, String fileName) {
 
         StatFs stat_fs = new StatFs(Environment.getExternalStorageDirectory().getPath());
@@ -306,31 +279,6 @@ public class Util {
             return false;
         }
         return false;
-    }
-
-    public static void snackbar(View coordinatorLayout, String message) {
-
-        Snackbar snackbar = Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_LONG);
-        View sbView = snackbar.getView();
-        TextView textView =  sbView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(Color.parseColor("#1976d2"));
-        textView.setGravity(Gravity.CENTER);
-        snackbar.setActionTextColor(Color.parseColor("#1976d2"));
-        sbView.setBackgroundColor(Color.WHITE);
-        snackbar.show();
-
-    }
-
-    public static void snackbarTop(View coordinatorLayout, String message) {
-
-        TSnackbar snackbar = TSnackbar
-                .make(coordinatorLayout, message, TSnackbar.LENGTH_LONG);
-        snackbar.setActionTextColor(Color.parseColor("#FF419CF5"));
-        View snackbarView = snackbar.getView();
-        snackbarView.setBackgroundColor(Color.parseColor("#FF419CF5"));
-        TextView textView =  snackbarView.findViewById(R.id.snackbar_text);
-        textView.setTextColor(Color.WHITE);
-        snackbar.show();
     }
 
     public static boolean isConnectingToInternet(Context context) {
