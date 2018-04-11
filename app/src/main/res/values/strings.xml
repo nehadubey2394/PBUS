@@ -12,6 +12,8 @@
     <string name="ok">OK</string>
     <string name="session_expired">Session Expired</string>
     <string name="your_session_is_expired_please_login_again">Your session is expired please login again</string>
+
+    <!--layout data-->
     <string name="who_you_are">Who You Are ?</string>
     <string name="seller">Seller</string>
     <string name="driver">Driver</string>
@@ -24,4 +26,12 @@
     <string name="no_bus">No Bus</string>
     <string name="from">From</string>
     <string name="source_location">Source Location</string>
+    <string name="to">To</string>
+    <string name="destination_location">Destination Location</string>
+    <string name="select_date">Select Date</string>
+    <string name="search">Search</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+    <string name="new_booking">New Booking</string>
+
 </resources>

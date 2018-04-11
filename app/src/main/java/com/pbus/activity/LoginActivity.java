@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             case R.id.tvLogin:
                 MyToast.getInstance(context).customToast(getResources().getString(R.string.underDev));
-                Intent i=new Intent(context, DriverHomeActivity.class);
+                Intent i=new Intent(context, SellerMainActivity.class);
                 startActivity(i);
                 break;
         }

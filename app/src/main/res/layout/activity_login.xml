@@ -50,7 +50,6 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginLeft="@dimen/_20sdp"
         android:layout_marginRight="@dimen/_20sdp"
         android:theme="@style/MyTextTheme">
@@ -86,18 +85,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/remember_me"
-            android:textColor="@color/loginText"
+            android:textColor="@color/loginNFieldTxt"
+            android:fontFamily="@font/poppins_regular"
             android:layout_centerVertical="true"
-            android:textSize="@dimen/_12ssp"/>
+            android:textSize="@dimen/_11sdp"/>
 
         <TextView
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/forgot_password"
-            android:textColor="@color/loginText"
+            android:textColor="@color/loginNFieldTxt"
             android:layout_centerVertical="true"
-            android:textSize="@dimen/_12ssp"/>
+            android:fontFamily="@font/poppins_regular"
+            android:textSize="@dimen/_11sdp"/>
+
     </RelativeLayout>
 
     <TextView
@@ -105,12 +107,13 @@
         android:layout_marginTop="@dimen/_40sdp"
         android:layout_marginBottom="@dimen/_20sdp"
         android:layout_gravity="center"
-        android:layout_width="@dimen/_160sdp"
-        android:layout_height="@dimen/_40sdp"
+        android:layout_width="@dimen/_175sdp"
+        android:layout_height="@dimen/_35sdp"
         android:background="@drawable/blue_rounded_corner_bg"
         android:text="@string/login"
         android:gravity="center"
+        android:fontFamily="@font/poppins_regular"
         android:textColor="@color/white"
-        android:textSize="@dimen/_16ssp"/>
+        android:textSize="@dimen/_14sdp"/>
 
 </LinearLayout>

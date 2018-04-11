@@ -1,40 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@id/toolbar_layout"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="end"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context="com.pbus.activity.DriverHomeActivity">
+    android:fitsSystemWindows="true">
 
     <include
-        android:id="@+id/toolbar"
-        layout="@layout/custom_toolbar"/>
+        android:id="@+id/toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-    <LinearLayout
-        android:id="@+id/rlContainer"
-        android:layout_below="@+id/toolbar"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:background="@color/white"
+        tools:context="com.pbus.activity.DriverHomeActivity">
 
-        <ImageView
-            android:layout_width="@dimen/_150sdp"
-            android:layout_height="@dimen/_100sdp"
-            android:src="@drawable/ic_no_bus"
-            android:padding="@dimen/_5sdp"
-            />
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/custom_toolbar"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/_16ssp"
-            android:text="@string/no_bus"/>
-
-        <View
+        <LinearLayout
+            android:id="@+id/rlContainer"
+            android:layout_below="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"/>
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="@dimen/_150sdp"
+                android:layout_height="@dimen/_100sdp"
+                android:src="@drawable/ic_no_bus"
+                android:padding="@dimen/_5sdp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_16sdp"
+                android:text="@string/no_bus"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:background="@color/colorPrimary"
+        android:fitsSystemWindows="true"
+        app:itemTextColor="@android:color/white"
+        />
+
 
 </RelativeLayout>
+
+</android.support.v4.widget.DrawerLayout>
+
+
+

@@ -27,14 +27,20 @@
         <activity
             android:name=".activity.WelcomeActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/MyStatusBarTheme"
             />
         <activity
             android:name=".activity.LoginActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/MyStatusBarTheme"/>
+
         <activity android:name=".activity.DriverHomeActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/MyStatusBarTheme"/>
+
         <activity android:name=".activity.SellerMainActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/MyStatusBarTheme"/>
     </application>
 
 </manifest>

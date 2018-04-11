@@ -6,8 +6,6 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowLightStatusBar">true</item>
-        <item name="android:statusBarColor">@color/transparent</item>
     </style>
 
     <style name="DialogAnimation">
@@ -25,7 +23,21 @@
 
 
     <style name="MyTextTheme" parent="AppTheme">
-        <item name="android:textColorHint">@color/loginText</item>
+        <item name="android:textColorHint">@color/loginNFieldTxt</item>
+        <item name="android:fontFamily">@font/poppins_regular</item>
     </style>
+
+    <style name="MyStatusBarTheme" parent="AppTheme">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor">@color/transparent</item>
+    </style>
+
+
+
+
+
+
 
 </resources>
