@@ -33,5 +33,7 @@
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
     <string name="new_booking">New Booking</string>
+    <string name="home">Home</string>
+    <string name="email_id">Email Id</string>
 
 </resources>

@@ -5,4 +5,7 @@ package com.pbus.helper;
  */
 
 public class Webservices {
+
+    private static final String BASE_URL="http://dev.mindiii.com/pbus/";
+    public static final String LOGIN= BASE_URL+"service/login";
 }

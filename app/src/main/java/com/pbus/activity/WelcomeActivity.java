@@ -13,10 +13,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pbus.R;
+import com.pbus.helper.SessionManager;
 
 public class WelcomeActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private FrameLayout mainLaySeller,mainLayDriver;
     private int type, lastClicked = 0;
     private Context context=this;
 
@@ -26,22 +26,28 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        setClick(mainLaySeller=findViewById(R.id.mainLaySeller),mainLayDriver=findViewById(R.id.mainLayDriver));
+        setClick(findViewById(R.id.mainLaySeller),findViewById(R.id.mainLayDriver));
     }
 
     private void setClick(View... view) {
-    for (View v:view) v.setOnClickListener(this);
+        for (View v:view) v.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
 
-            case R.id.mainLaySeller:  setLastClickedRes(); type=1; setResours((FrameLayout) v,true); lastClicked = 0; startActivity(new Intent(context,LoginActivity.class)); break;
+            case R.id.mainLaySeller:  setLastClickedRes();  setResours((FrameLayout) v,true); lastClicked = 0;  callIntent(1); break;
 
-            case R.id.mainLayDriver:  setLastClickedRes(); type=2; setResours((FrameLayout) v,true); lastClicked = 1 ; startActivity(new Intent(context,LoginActivity.class)); break;
+            case R.id.mainLayDriver:  setLastClickedRes();  setResours((FrameLayout) v,true); lastClicked = 1 ; callIntent(2); break;
 
         }
+    }
+
+    private void callIntent(int type) {
+        Intent i=new Intent(context,LoginActivity.class);
+        i.putExtra("type",type);
+        startActivity(i);
     }
 
     private void setLastClickedRes(){

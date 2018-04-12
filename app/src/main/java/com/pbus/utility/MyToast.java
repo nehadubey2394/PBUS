@@ -92,10 +92,10 @@ public class MyToast {
         Snackbar snackbar = Snackbar.make(coordinatorLayout, message, Snackbar.LENGTH_LONG);
         View sbView = snackbar.getView();
         TextView textView =  sbView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(Color.parseColor("#1976d2"));
+        textView.setTextColor(Color.parseColor("#ffffff"));  //old color 1976d2
         textView.setGravity(Gravity.CENTER);
         snackbar.setActionTextColor(Color.parseColor("#1976d2"));
-        sbView.setBackgroundColor(Color.WHITE);
+        sbView.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));  //Color.WHITE
         snackbar.show();
 
     }

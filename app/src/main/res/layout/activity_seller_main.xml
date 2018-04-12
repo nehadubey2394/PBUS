@@ -1,50 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawerMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:openDrawer="end"
+    tools:openDrawer="start"
     tools:context="com.pbus.activity.SellerMainActivity">
 
-  <RelativeLayout
-      android:id="@+id/mainView"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/mainView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-      <include android:id="@+id/toolbar"
-          layout="@layout/custom_toolbar"/>
+        <include android:id="@+id/toolbar"
+            layout="@layout/custom_toolbar"/>
 
-      <RelativeLayout
-          android:id="@+id/rlContainer"
-          android:layout_below="@id/toolbar"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent">
+        <RelativeLayout
+            android:id="@+id/rlContainer"
+            android:layout_below="@id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-          <ScrollView
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+            <FrameLayout
+                android:id="@+id/frame_fragments_seller"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
 
-           <!--  <FrameLayout
-                 android:id="@+id/frame_fragments_seller"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"/>-->
-<include layout="@layout/fragment_new_booking"/>
+        </RelativeLayout>
 
-          </ScrollView>
-
-      </RelativeLayout>
-
-  </RelativeLayout>
+    </RelativeLayout>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_view"
         android:layout_width="@dimen/_175sdp"
         android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
         android:layout_gravity="start">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="start"
+            android:layout_marginTop="@dimen/_50sdp"
+            android:orientation="vertical">
 
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:id="@+id/imgProfile"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_80sdp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_profile_holder"/>
+
+            <TextView
+                android:id="@+id/tvFullName"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_regular"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14sdp"/>
+
+            <TextView
+                android:id="@+id/tvUserType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_light"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14sdp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_20sdp"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvSeller"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:overScrollMode="never"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/_5sdp"/>
+
+        </LinearLayout>
 
     </android.support.design.widget.NavigationView>
 

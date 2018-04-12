@@ -14,13 +14,26 @@
         android:minHeight="?attr/actionBarSize">
 
         <ImageView
-            android:id="@+id/imgDrawerIcon"
+            android:id="@+id/imgDrawerMenu"
             android:layout_width="@dimen/_20sdp"
             android:layout_height="@dimen/_20sdp"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/_10sdp"
             android:background="@drawable/ic_menu"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_alignParentLeft="true" />
+
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/imgDrawerCancel"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:src="@drawable/ic_close"
+            android:padding="@dimen/_3sdp"
             android:layout_marginLeft="@dimen/_10sdp"
             android:layout_alignParentLeft="true" />
 
@@ -32,6 +45,7 @@
             android:layout_gravity="center"
             android:fontFamily="@font/poppins_regular"
             android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_16sdp"
              />
 
     </android.support.v7.widget.Toolbar>

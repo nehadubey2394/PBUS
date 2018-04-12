@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_margin="@dimen/_16sdp"
-        app:cardBackgroundColor="@color/transparent"
+        app:cardBackgroundColor="@color/custom_alert_bg_color2"
         app:cardCornerRadius="10dp"
         android:layout_marginTop="50dp">
 
@@ -36,7 +36,8 @@
             <TextView
                 android:id="@+id/tv_msg"
                 android:textColor="@color/black"
-                android:layout_margin="10dp"
+               android:layout_margin="10dp"
+                android:gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 

@@ -26,7 +26,11 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
                 Intent i;
                 if (PBUS.sessionManager.isLoggedIn()) {
-                    i = new Intent(SplashActivity.this, WelcomeActivity.class);
+                    if (PBUS.sessionManager.getUserInfo().user_type.equalsIgnoreCase("seller")){
+                        i = new Intent(SplashActivity.this, SellerMainActivity.class);
+                    }else{
+                        i = new Intent(SplashActivity.this, DriverHomeActivity.class);
+                    }
                 } else {
                     i = new Intent(SplashActivity.this, WelcomeActivity.class);
                 }
