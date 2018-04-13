@@ -1,5 +1,6 @@
 package com.pbus.activity;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,10 +23,12 @@ import android.widget.TextView;
 import com.pbus.R;
 import com.pbus.adapter.DrawerAdapter;
 import com.pbus.bean.UserInfoBean;
+import com.pbus.dialog.NoConnectionDialog;
 import com.pbus.fragment.seller.NewBookingFragment;
 import com.pbus.listener.AdapterListener;
 import com.pbus.utility.MyToast;
 import com.pbus.utility.PBUS;
+import com.pbus.utility.network.NetworkChangeReceiver;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -36,7 +39,7 @@ public class SellerMainActivity extends AppCompatActivity implements View.OnClic
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private RelativeLayout mainView;
-    private ImageView imgDrawerMenu,imgProfile;
+    private ImageView imgDrawerCancel,imgDrawerMenu,imgProfile;
     private TextView tvUserType,tvFullName;
 
     private ArrayList<String> drawerItemList;
@@ -50,6 +53,25 @@ public class SellerMainActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_seller_main);
         initView();
         initNavigationDrawer();
+
+        /*final NoConnectionDialog network =  new NoConnectionDialog(SellerMainActivity.this, new NoConnectionDialog.Listener() {
+            @Override
+            public void onNetworkChange(Dialog dialog, boolean isConnected) {
+                if(isConnected){
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        NetworkChangeReceiver networkChangeReceiver = new NetworkChangeReceiver();
+        networkChangeReceiver.setListener(new NetworkChangeReceiver.Listener() {
+            @Override
+            public void onNetworkChange(boolean isConnected) {
+                if(isConnected && network!=null){
+                    network.dismiss();
+                }else network.show();
+            }
+        });*/
     }
 
     private void initView() {
@@ -59,6 +81,7 @@ public class SellerMainActivity extends AppCompatActivity implements View.OnClic
         imgProfile=findViewById(R.id.imgProfile);
         tvFullName=findViewById(R.id.tvFullName);
         tvUserType=findViewById(R.id.tvUserType);
+        imgDrawerCancel=findViewById(R.id.imgDrawerCancel);
 
         RecyclerView rvSeller=findViewById(R.id.rvSeller);
 
@@ -88,11 +111,15 @@ public class SellerMainActivity extends AppCompatActivity implements View.OnClic
 
             @Override
             public void onDrawerClosed(View v) {
+                imgDrawerCancel.setVisibility(View.GONE);
+                imgDrawerMenu.setVisibility(View.VISIBLE);
                 super.onDrawerClosed(v);
             }
 
             @Override
             public void onDrawerOpened(View v) {
+                imgDrawerMenu.setVisibility(View.GONE);
+                imgDrawerCancel.setVisibility(View.VISIBLE);
                 super.onDrawerOpened(v);
             }
 
@@ -105,7 +132,6 @@ public class SellerMainActivity extends AppCompatActivity implements View.OnClic
             }
 
         };
-        actionBarDrawerToggle.setHomeAsUpIndicator(R.drawable.ic_close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         drawerLayout.setScrimColor(getResources().getColor(android.R.color.transparent));
         actionBarDrawerToggle.syncState();
@@ -116,7 +142,8 @@ public class SellerMainActivity extends AppCompatActivity implements View.OnClic
 
         Picasso.with(context).load(bean.thumbImage).placeholder(R.drawable.ic_profile_holder).into(imgProfile);
         tvFullName.setText(bean.full_name);
-        tvUserType.setText(bean.user_type);
+        String userType= bean.user_type.substring(0,1).toUpperCase() + bean.user_type.substring(1);
+        tvUserType.setText(userType);
     }
 
     private void addItemInList() {
@@ -233,6 +260,7 @@ public class SellerMainActivity extends AppCompatActivity implements View.OnClic
                 handler.removeCallbacks(runnable);
                 finish();
             } else {
+                MyToast.getInstance(context).snackbar(imgProfile,"Press back again to exit");
                 doubleBackPress = true;
             }
         }
@@ -249,7 +277,7 @@ public class SellerMainActivity extends AppCompatActivity implements View.OnClic
             case 3: MyToast.getInstance(context).customToast(getResources().getString(R.string.underDev)); drawerLayout.closeDrawers(); break;
             case 4: MyToast.getInstance(context).customToast(getResources().getString(R.string.underDev)); drawerLayout.closeDrawers(); break;
             case 5: MyToast.getInstance(context).customToast(getResources().getString(R.string.underDev)); drawerLayout.closeDrawers(); break;
-            case 6: MyToast.getInstance(context).showLogoutAlert("Alert!","Logout successfully");
+            case 6: MyToast.getInstance(context).customToast("Logout successfully");
             PBUS.sessionManager.logout(SellerMainActivity.this); drawerLayout.closeDrawers();  break;
         }
     }

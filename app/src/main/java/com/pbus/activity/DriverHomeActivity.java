@@ -121,7 +121,8 @@ public class DriverHomeActivity extends AppCompatActivity implements View.OnClic
 
         Picasso.with(context).load(bean.thumbImage).placeholder(R.drawable.ic_profile_holder).into(imgProfile);
         tvFullName.setText(bean.full_name);
-        tvUserType.setText(bean.user_type);
+        String userType= bean.user_type.substring(0,1).toUpperCase() + bean.user_type.substring(1);
+        tvUserType.setText(userType);
     }
 
     private void addItemInList() {
@@ -244,7 +245,7 @@ public class DriverHomeActivity extends AppCompatActivity implements View.OnClic
             case 2: MyToast.getInstance(context).customToast(getResources().getString(R.string.underDev)); drawerLayout.closeDrawers(); break;
             case 3: MyToast.getInstance(context).customToast(getResources().getString(R.string.underDev)); drawerLayout.closeDrawers(); break;
             case 4: MyToast.getInstance(context).customToast(getResources().getString(R.string.underDev)); drawerLayout.closeDrawers(); break;
-            case 5: MyToast.getInstance(context).showLogoutAlert("Alert!","Logout successfully");
+            case 5: MyToast.getInstance(context).customToast("Logout successfully");
                 PBUS.sessionManager.logout(DriverHomeActivity.this); drawerLayout.closeDrawers(); break;
         }
     }

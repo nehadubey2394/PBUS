@@ -48,11 +48,10 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:background="@drawable/circle_grey"/>
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:layout_width="@dimen/_100sdp"
                 android:layout_height="@dimen/_100sdp"
-                android:background="@drawable/circle"
-                android:src="@drawable/ic_seller_active"
+                app:srcCompat="@drawable/ic_seller"
                 android:padding="@dimen/_25sdp"
                 android:layout_gravity="top|center_horizontal"
                 />
@@ -64,7 +63,7 @@
                 android:layout_gravity="center_horizontal|bottom"
                 android:text="@string/seller"
                 android:fontFamily="@font/poppins_light"
-                android:textColor="@color/colorPrimary"/>
+                android:textColor="@color/grey2"/>
 
             <android.support.v7.widget.CardView
                 android:layout_width="@dimen/_20sdp"
@@ -75,14 +74,14 @@
                 app:cardBackgroundColor="@color/colorPrimary"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginRight="@dimen/_8sdp"
-                android:visibility="visible"
+                android:visibility="gone"
                 >
 
-                <ImageView
+                <android.support.v7.widget.AppCompatImageView
                     android:layout_width="@dimen/_10sdp"
                     android:layout_height="@dimen/_10sdp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_right"/>
+                    app:srcCompat="@drawable/ic_right"/>
 
             </android.support.v7.widget.CardView>
 
@@ -101,10 +100,10 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:background="@drawable/circle_grey"/>
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:layout_width="@dimen/_100sdp"
                 android:layout_height="@dimen/_100sdp"
-                android:src="@drawable/ic_driver"
+                app:srcCompat="@drawable/ic_driver"
                 android:padding="@dimen/_25sdp"
                 android:layout_gravity="top|center_horizontal"
                 />

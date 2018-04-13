@@ -83,7 +83,20 @@
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/_5sdp"/>
 
+
         </LinearLayout>
+
+        <TextView
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_light"
+            android:gravity="center"
+            android:padding="@dimen/_2sdp"
+            android:text="@string/premium_bus_rapid_2018"
+            android:textColor="@color/white"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:textSize="@dimen/_10sdp"/>
 
     </android.support.design.widget.NavigationView>
 

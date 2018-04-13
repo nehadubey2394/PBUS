@@ -7,6 +7,10 @@
     <!--error-->
     <string name="something_wrong">Something went wrong</string>
     <string name="underDev">Under development</string>
+    <string name="error_msg_network">No Internet connection found check your\n connectivity or Try again</string>
+    <string name="retry">Retry</string>
+    <string name="submit">Submit</string>
+
 
     <!--session logout-->
     <string name="ok">OK</string>
@@ -21,6 +25,7 @@
     <string name="password">Password</string>
     <string name="remember_me">Remember Me</string>
     <string name="forgot_password">Forgot Password ?</string>
+    <string name="forgot_password_titl">Forgot Password</string>
     <string name="login">Login</string>
     <string name="alert">Alert!</string>
     <string name="no_bus">No Bus</string>
@@ -35,5 +40,8 @@
     <string name="new_booking">New Booking</string>
     <string name="home">Home</string>
     <string name="email_id">Email Id</string>
+    <string name="premium_bus_rapid_2018">Premium bus rapid@ 2018</string>
+
+
 
 </resources>

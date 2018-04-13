@@ -13,6 +13,11 @@
         <item name="android:windowExitAnimation">@anim/zoom_out_dialog</item>
     </style>
 
+    <style name="DialogAnimationDown">
+        <item name="android:windowEnterAnimation">@anim/slide_up</item>
+        <item name="android:windowExitAnimation">@anim/slide_down</item>
+    </style>
+
     <style name="Splash" parent="AppTheme">
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>

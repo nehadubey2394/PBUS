@@ -1,15 +1,26 @@
 package com.pbus.activity;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Handler;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.ArrayMap;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.pbus.R;
 import com.pbus.bean.RememberBean;
@@ -38,7 +49,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private CheckBox cbRemember;
     private EditText etEmail,etPwd;
     private RememberBean rememberBean;
-    private TextInputLayout inputLayEmail,inputLayPwd;
+    private TextInputLayout inputLayEmail,inputLayPwd,ilEmailForgot;
+    private RelativeLayout rlForgotPwd;
+    private ImageView imgToolbarBack;
+    private TextView tvLogin;
 
     private static int type;
 
@@ -47,17 +61,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         initView();
-
-        setRememberMeData();
     }
 
     private void initView() {
+        //header
+        findViewById(R.id.imgDrawerMenu).setVisibility(View.GONE);
+
         cbRemember=findViewById(R.id.cbRemember);
         etEmail=findViewById(R.id.etEmail);
         etPwd=findViewById(R.id.etPwd);
         inputLayEmail=findViewById(R.id.inputLayEmail);
         inputLayPwd=findViewById(R.id.inputLayPwd);
-        setOnClick(findViewById(R.id.imgBack),findViewById(R.id.tvLogin),findViewById(R.id.tvForgotPwd));
+        ilEmailForgot=findViewById(R.id.ilEmailForgot);
+        setOnClick(findViewById(R.id.imgBack),tvLogin=findViewById(R.id.tvLogin),findViewById(R.id.tvForgotPwd),findViewById(R.id.tvSubmit),
+                rlForgotPwd=findViewById(R.id.rlForgotPwd),imgToolbarBack=findViewById(R.id.imgToolbarBack));
+
+        setRememberMeData();
     }
 
     private void setRememberMeData() {
@@ -66,6 +85,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             if (type==1) rememberBean=PBUS.sessionManager.getRememberSeller();
             else rememberBean=PBUS.sessionManager.getRememberDriver();
         }
+        inputLayEmail.setHintAnimationEnabled(false);
+        inputLayPwd.setHintAnimationEnabled(false);
 
         etEmail.setText(rememberBean.name);
         etPwd.setText(rememberBean.pwd);
@@ -84,16 +105,45 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 onBackPressed();
                 break;
 
+            case R.id.imgToolbarBack:
+                rlForgotPwd.setVisibility(View.GONE);
+                break;
+
             case R.id.tvForgotPwd:
-                MyToast.getInstance(context).customToast(getResources().getString(R.string.underDev));
+                TextView tvTitle=findViewById(R.id.tvToolbarTitle);
+                tvTitle.setText(R.string.forgot_password_titl);
+                imgToolbarBack.setVisibility(View.VISIBLE);
+                rlForgotPwd.setVisibility(View.VISIBLE);
+                break;
+
+            case R.id.rlForgotPwd:  //forgot pwd main layout
+                rlForgotPwd.setVisibility(View.GONE);
                 break;
 
             case R.id.tvLogin:
                 if (isValidateInput()) {
+                    tvLogin.setEnabled(false);
                     String userType;
                     if (type==1) userType="seller";
                     else userType="driver";
                     doLogin(etEmail.getText().toString(),etPwd.getText().toString(),userType);
+                }
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        tvLogin.setEnabled(true);
+                    }
+                },3000);
+                break;
+
+            case R.id.tvSubmit:
+
+                EditText etEmailForgot=findViewById(R.id.etEmailForgot);
+                if (isValidateEmail(etEmailForgot)) {
+                    etEmailForgot.setText("");
+                    rlForgotPwd.setVisibility(View.GONE);
+                    MyToast.getInstance(context).customToast(getResources().getString(R.string.underDev));
                 }
                 break;
         }
@@ -133,10 +183,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
                         }
-                        MyToast.getInstance(context).showCustomAlert("Alert!","Login successfully");
                         finish();
                     }else{
-                       MyToast.getInstance(context).showCustomAlert("Alert!",message);
+                        MyToast.getInstance(context).customToast(message);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -153,6 +202,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 params.put("email", email);
                 params.put("password", pwd);
                 params.put("userType", userType);
+                params.put("deviceToken", "123456");  //firebase device token
+                params.put("deviceType", "2");
 
                 return params;
             }
@@ -166,15 +217,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void setRememberMe(int type){
+        RememberBean rememberBean=new RememberBean();
         if (cbRemember.isChecked()){
-            RememberBean rememberBean=new RememberBean();
             rememberBean.type=type;
             rememberBean.name=etEmail.getText().toString();
             rememberBean.pwd=etPwd.getText().toString();
 
-            if (type==1)PBUS.sessionManager.createRememberSeller(rememberBean);
-            else PBUS.sessionManager.createRememberDriver(rememberBean);
+        }else{
+            rememberBean.type=type;
+            rememberBean.name="";
+            rememberBean.pwd="";
         }
+        if (type==1)PBUS.sessionManager.createRememberSeller(rememberBean);
+        else PBUS.sessionManager.createRememberDriver(rememberBean);
     }
 
     private boolean isValidateInput(){
@@ -208,13 +263,40 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             inputLayPwd.setErrorEnabled(false);
             return true;
         }
+    }
 
+    private boolean isValidateEmail(EditText etEmailForgot){
+        Validation validate=new Validation();
+
+        if (validate.getString(etEmailForgot).isEmpty()){
+            ilEmailForgot.setError("Please enter email id");
+            ilEmailForgot.requestFocus();
+            return false;
+        }
+        else if(!validate.isEmailValid(etEmailForgot)){
+            ilEmailForgot.setError("Enter valid email id");
+            ilEmailForgot.requestFocus();
+            return false;
+        }else{
+            ilEmailForgot.setError(null);
+            ilEmailForgot.setErrorEnabled(false);
+            return true;
+        }
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        this.finish();
+
+        if (rlForgotPwd.getVisibility()==View.VISIBLE)
+        {
+            rlForgotPwd.setVisibility(View.GONE);
+            ilEmailForgot.setError(null);
+            ilEmailForgot.setErrorEnabled(false);
+        }
+        else{
+            super.onBackPressed();
+            this.finish();
+        }
     }
 
 }

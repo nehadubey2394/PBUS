@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.pbus">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -27,20 +28,32 @@
         <activity
             android:name=".activity.WelcomeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/MyStatusBarTheme"
-            />
+            android:theme="@style/MyStatusBarTheme" />
         <activity
             android:name=".activity.LoginActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/MyStatusBarTheme"/>
-
-        <activity android:name=".activity.DriverHomeActivity"
+            android:theme="@style/MyStatusBarTheme" />
+        <activity
+            android:name=".activity.DriverHomeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/MyStatusBarTheme"/>
-
-        <activity android:name=".activity.SellerMainActivity"
+            android:theme="@style/MyStatusBarTheme" />
+        <activity
+            android:name=".activity.SellerMainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/MyStatusBarTheme"/>
+            android:theme="@style/MyStatusBarTheme" />
+
+        <receiver
+            android:name=".utility.network.NetworkChangeReceiver"
+            android:enabled="true"
+            android:label="NetworkChangeReceiver">
+            <intent-filter>
+                <action
+                    android:name="android.net.conn.CONNECTIVITY_CHANGE"
+                    tools:ignore="BatteryLife" />
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>
