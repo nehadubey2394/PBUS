@@ -18,6 +18,7 @@
 
     <color name="custom_alert_bg_color">#B34c3549</color>
     <color name="custom_alert_bg_color2">#00A4DD</color>
+    <color name="white50">#80FFFFFF</color>
 
 
 </resources>

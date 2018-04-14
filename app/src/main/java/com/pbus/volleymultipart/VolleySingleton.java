@@ -9,6 +9,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.pbus.utility.Util;
 
 /*
  * Created by mindiii on 8/12/17.
@@ -17,11 +18,11 @@ import com.android.volley.toolbox.Volley;
 
 public class VolleySingleton {
 
+    private static final String TAG = VolleySingleton.class.getSimpleName();
     private static VolleySingleton mInstance;
     private static Context mCtx;
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
-    private static final String TAG = VolleySingleton.class.getSimpleName();
 
     /**
      * Private constructor, only initialization from getInstance.
@@ -90,6 +91,7 @@ public class VolleySingleton {
 
     public void cancelPendingRequests(Object tag) {
         if (mRequestQueue != null) {
+            Util.e(TAG, "cancel api");
             mRequestQueue.cancelAll(tag);
         }
     }

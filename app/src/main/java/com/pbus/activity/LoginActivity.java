@@ -23,6 +23,7 @@ import com.pbus.utility.Progress;
 import com.pbus.utility.Util;
 import com.pbus.utility.Validation;
 import com.pbus.volleymultipart.VolleyGetPost;
+import com.pbus.volleymultipart.VolleySingleton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -163,7 +164,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     if (status.equalsIgnoreCase("success")) {
                         MyToast.getInstance(context).customToast(jsonObject.getString("userInfo"));
                     } else {
-                        MyToast.getInstance(context).customToast(message);
+                        MyToast.getInstance(context).customToast("Please enter correct email id");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -225,7 +226,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         }
                         finish();
                     }else{
-                        MyToast.getInstance(context).customToast(message);
+                        if (message.equalsIgnoreCase("Please choose correct user type")) {
+                            MyToast.getInstance(context).customToast("Email Id and Password doesn't match with the user type");
+                        } else if (message.equalsIgnoreCase("Wrong password") | message.equalsIgnoreCase("Invalid Email or Password")) {
+                            MyToast.getInstance(context).customToast("Invalid Email Id or Password");
+                        } else MyToast.getInstance(context).customToast(message);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -331,6 +336,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             forgotErrorClear();
         }
         else{
+            VolleySingleton.getInstance(context).cancelPendingRequests(TAG);
             super.onBackPressed();
             this.finish();
         }

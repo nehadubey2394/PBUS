@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.view.View;
@@ -46,6 +47,12 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Custom_Progress_Bus.getInstance(context).show();
+    }
+
     private void setClick(View... view) {
         for (View v:view) v.setOnClickListener(this);
     }
@@ -55,34 +62,35 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         switch (v.getId()){
 
             case R.id.mainLaySeller:
-                mainLaySeller.setEnabled(false);
+                manageClicks();
                 setLastClickedRes();
                 setResours((FrameLayout) v, true);
                 lastClicked = 0;
                 callIntent(1);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mainLaySeller.setEnabled(true);
-                    }
-                }, 2000);
                 break;
 
             case R.id.mainLayDriver:
-                mainLayDriver.setEnabled(false);
+                manageClicks();
                 setLastClickedRes();
                 setResours((FrameLayout) v, true);
                 lastClicked = 1;
                 callIntent(2);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mainLayDriver.setEnabled(true);
-                    }
-                }, 2000);
                 break;
 
         }
+    }
+
+    private void manageClicks() {
+        mainLaySeller.setEnabled(false);
+        mainLayDriver.setEnabled(false);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mainLaySeller.setEnabled(true);
+                mainLayDriver.setEnabled(true);
+            }
+        }, 1000);
     }
 
     private void callIntent(int type) {
