@@ -4,12 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -68,27 +65,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         setRememberMeData();
     }
-
-    @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-
-        etPwd.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                boolean handled = false;
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    //handle action here
-                    handled = true;
-                    focusClear();
-                }
-
-                return handled;
-            }
-        });
-
-    }
-
 
     private void setRememberMeData() {
         if (getIntent().getExtras()!=null){

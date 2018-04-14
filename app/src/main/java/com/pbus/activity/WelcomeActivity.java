@@ -3,6 +3,7 @@ package com.pbus.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.view.View;
@@ -53,9 +54,33 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()){
 
-            case R.id.mainLaySeller:  setLastClickedRes();  setResours((FrameLayout) v,true); lastClicked = 0;  callIntent(1); break;
+            case R.id.mainLaySeller:
+                mainLaySeller.setEnabled(false);
+                setLastClickedRes();
+                setResours((FrameLayout) v, true);
+                lastClicked = 0;
+                callIntent(1);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mainLaySeller.setEnabled(true);
+                    }
+                }, 2000);
+                break;
 
-            case R.id.mainLayDriver:  setLastClickedRes();  setResours((FrameLayout) v,true); lastClicked = 1 ; callIntent(2); break;
+            case R.id.mainLayDriver:
+                mainLayDriver.setEnabled(false);
+                setLastClickedRes();
+                setResours((FrameLayout) v, true);
+                lastClicked = 1;
+                callIntent(2);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mainLayDriver.setEnabled(true);
+                    }
+                }, 2000);
+                break;
 
         }
     }
