@@ -1,6 +1,5 @@
 package com.pbus.activity;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,12 +22,10 @@ import android.widget.TextView;
 import com.pbus.R;
 import com.pbus.adapter.DrawerAdapter;
 import com.pbus.bean.UserInfoBean;
-import com.pbus.dialog.NoConnectionDialog;
 import com.pbus.fragment.seller.NewBookingFragment;
 import com.pbus.listener.AdapterListener;
 import com.pbus.utility.MyToast;
 import com.pbus.utility.PBUS;
-import com.pbus.utility.network.NetworkChangeReceiver;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -278,7 +275,9 @@ public class SellerMainActivity extends AppCompatActivity implements View.OnClic
             case 4: MyToast.getInstance(context).customToast(getResources().getString(R.string.underDev)); drawerLayout.closeDrawers(); break;
             case 5: MyToast.getInstance(context).customToast(getResources().getString(R.string.underDev)); drawerLayout.closeDrawers(); break;
             case 6: MyToast.getInstance(context).customToast("Logout successfully");
-            PBUS.sessionManager.logout(SellerMainActivity.this); drawerLayout.closeDrawers();  break;
+                PBUS.sessionManager.logout(SellerMainActivity.this, 1);
+                drawerLayout.closeDrawers();
+                break;
         }
     }
 }

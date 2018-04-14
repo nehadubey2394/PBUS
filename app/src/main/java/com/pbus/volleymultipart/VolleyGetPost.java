@@ -1,14 +1,6 @@
 package com.pbus.volleymultipart;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.view.View;
-import android.view.Window;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -56,7 +48,7 @@ public abstract class VolleyGetPost {
 
         if (Util.isNetworkAvailable(activity, activity.getWindow().getDecorView())) {
             Util.hideSoftKeyboard(activity);
-            Progress.show(activity);
+            Progress.showProgressOnly(activity);
             StringRequest stringRequest = new StringRequest(methodType, url,
                     new Response.Listener<String>() {
                         @Override
@@ -119,7 +111,7 @@ public abstract class VolleyGetPost {
                 if (status.equals("300")) {
 
                     MyToast.getInstance(activity).showLogoutAlert(activity.getResources().getString(R.string.session_expired),activity.getResources().getString(R.string.your_session_is_expired_please_login_again));
-                    SessionManager.getInstance().logout(activity);
+                    SessionManager.getInstance().logout(activity, 0);
 
                 } else if (networkResponse.statusCode == 404) {
                     errorMessage = "Resource not found";

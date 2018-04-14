@@ -1,21 +1,15 @@
 package com.pbus.activity;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.TextInputEditText;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.ArrayMap;
-import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -25,36 +19,31 @@ import android.widget.TextView;
 import com.pbus.R;
 import com.pbus.bean.RememberBean;
 import com.pbus.bean.UserInfoBean;
-import com.pbus.helper.SessionManager;
 import com.pbus.helper.Webservices;
 import com.pbus.utility.MyToast;
 import com.pbus.utility.PBUS;
+import com.pbus.utility.Progress;
 import com.pbus.utility.Util;
 import com.pbus.utility.Validation;
 import com.pbus.volleymultipart.VolleyGetPost;
-import com.pbus.volleymultipart.VolleySingleton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.Driver;
-import java.util.HashMap;
 import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Context context=this;
     private static final String TAG = LoginActivity.class.getSimpleName();
-
+    private static int type;
+    private Context context = this;
     private CheckBox cbRemember;
-    private EditText etEmail,etPwd;
+    private EditText etEmail, etPwd, etEmailForgot;
     private RememberBean rememberBean;
     private TextInputLayout inputLayEmail,inputLayPwd,ilEmailForgot;
     private RelativeLayout rlForgotPwd;
     private ImageView imgToolbarBack;
-    private TextView tvLogin;
-
-    private static int type;
+    private TextView tvLogin, tvForgotPwd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,17 +56,39 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //header
         findViewById(R.id.imgDrawerMenu).setVisibility(View.GONE);
 
+        etEmailForgot = findViewById(R.id.etEmailForgot);
         cbRemember=findViewById(R.id.cbRemember);
         etEmail=findViewById(R.id.etEmail);
         etPwd=findViewById(R.id.etPwd);
         inputLayEmail=findViewById(R.id.inputLayEmail);
         inputLayPwd=findViewById(R.id.inputLayPwd);
         ilEmailForgot=findViewById(R.id.ilEmailForgot);
-        setOnClick(findViewById(R.id.imgBack),tvLogin=findViewById(R.id.tvLogin),findViewById(R.id.tvForgotPwd),findViewById(R.id.tvSubmit),
+        setOnClick(findViewById(R.id.imgBack), tvLogin = findViewById(R.id.tvLogin), tvForgotPwd = findViewById(R.id.tvForgotPwd), findViewById(R.id.tvSubmit),
                 rlForgotPwd=findViewById(R.id.rlForgotPwd),imgToolbarBack=findViewById(R.id.imgToolbarBack));
 
         setRememberMeData();
     }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+        etPwd.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    //handle action here
+                    handled = true;
+                    focusClear();
+                }
+
+                return handled;
+            }
+        });
+
+    }
+
 
     private void setRememberMeData() {
         if (getIntent().getExtras()!=null){
@@ -118,10 +129,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             case R.id.rlForgotPwd:  //forgot pwd main layout
                 rlForgotPwd.setVisibility(View.GONE);
+                etEmailForgot.setText("");
+                forgotErrorClear();
                 break;
 
             case R.id.tvLogin:
                 if (isValidateInput()) {
+                    tvForgotPwd.setEnabled(false);
                     tvLogin.setEnabled(false);
                     String userType;
                     if (type==1) userType="seller";
@@ -132,33 +146,83 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        tvForgotPwd.setEnabled(true);
                         tvLogin.setEnabled(true);
                     }
-                },3000);
+                }, 4000);
                 break;
 
             case R.id.tvSubmit:
 
-                EditText etEmailForgot=findViewById(R.id.etEmailForgot);
                 if (isValidateEmail(etEmailForgot)) {
-                    etEmailForgot.setText("");
+                    forgotErrorClear();
+                    tvForgotPwd.setEnabled(false);
+                    tvLogin.setEnabled(false);
                     rlForgotPwd.setVisibility(View.GONE);
-                    MyToast.getInstance(context).customToast(getResources().getString(R.string.underDev));
+                    forgotPwdApi(etEmailForgot.getText().toString().trim());
+                    etEmailForgot.setText("");
+                    // MyToast.getInstance(context).customToast(getResources().getString(R.string.underDev));
                 }
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        tvForgotPwd.setEnabled(true);
+                        tvLogin.setEnabled(true);
+                    }
+                }, 4000);
                 break;
         }
     }
 
+    private void forgotPwdApi(final String email) {
+        new VolleyGetPost(LoginActivity.this, Webservices.FORGOT, true, TAG) {
+            @Override
+            public void onVolleyResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    String status = jsonObject.getString("status");
+                    String message = jsonObject.getString("message");
+
+                    if (status.equalsIgnoreCase("success")) {
+                        MyToast.getInstance(context).customToast(jsonObject.getString("userInfo"));
+                    } else {
+                        MyToast.getInstance(context).customToast(message);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onNetError() {
+                Progress.hide(context);
+            }
+
+            @Override
+            public Map<String, String> setParams(Map<String, String> params) {
+                params.put("email", email);
+                return params;
+            }
+
+            @Override
+            public Map<String, String> setHeaders(Map<String, String> params) {
+                return params;
+            }
+        }.executeVolley();
+    }
+
     private void doLogin(final String email, final String pwd, final String userType) {
+
         new VolleyGetPost(LoginActivity.this, Webservices.LOGIN,true,TAG) {
             @Override
             public void onVolleyResponse(String response) {
                 try {
                     JSONObject jsonObject=new JSONObject(response);
-                    String success=jsonObject.getString("status");
+                    String status = jsonObject.getString("status");
                     String message=jsonObject.getString("message");
 
-                    if (success.equalsIgnoreCase("success")){
+                    if (status.equalsIgnoreCase("success")) {
                         UserInfoBean userInfoBean=new UserInfoBean();
                         JSONObject obj=jsonObject.getJSONObject("userDetail");
 
@@ -194,7 +258,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onNetError() {
-
+                Progress.hide(context);
             }
 
             @Override
@@ -278,25 +342,33 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             ilEmailForgot.requestFocus();
             return false;
         }else{
-            ilEmailForgot.setError(null);
-            ilEmailForgot.setErrorEnabled(false);
+            forgotErrorClear();
             return true;
         }
     }
 
     @Override
     public void onBackPressed() {
-
         if (rlForgotPwd.getVisibility()==View.VISIBLE)
         {
             rlForgotPwd.setVisibility(View.GONE);
-            ilEmailForgot.setError(null);
-            ilEmailForgot.setErrorEnabled(false);
+            forgotErrorClear();
         }
         else{
             super.onBackPressed();
             this.finish();
         }
     }
+
+    private void forgotErrorClear() {
+        ilEmailForgot.setError(null);
+        ilEmailForgot.setErrorEnabled(false);
+    }
+
+    private void focusClear() {
+        etPwd.clearFocus();
+        Util.hideSoftKeyboard(this);
+    }
+
 
 }

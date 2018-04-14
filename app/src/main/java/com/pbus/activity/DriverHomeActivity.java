@@ -2,6 +2,7 @@ package com.pbus.activity;
 
 import android.content.Context;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -10,7 +11,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -23,7 +23,6 @@ import com.pbus.R;
 import com.pbus.adapter.DrawerAdapter;
 import com.pbus.bean.UserInfoBean;
 import com.pbus.fragment.driver.NoBusFragment;
-import com.pbus.fragment.seller.NewBookingFragment;
 import com.pbus.listener.AdapterListener;
 import com.pbus.utility.MyToast;
 import com.pbus.utility.PBUS;
@@ -246,7 +245,9 @@ public class DriverHomeActivity extends AppCompatActivity implements View.OnClic
             case 3: MyToast.getInstance(context).customToast(getResources().getString(R.string.underDev)); drawerLayout.closeDrawers(); break;
             case 4: MyToast.getInstance(context).customToast(getResources().getString(R.string.underDev)); drawerLayout.closeDrawers(); break;
             case 5: MyToast.getInstance(context).customToast("Logout successfully");
-                PBUS.sessionManager.logout(DriverHomeActivity.this); drawerLayout.closeDrawers(); break;
+                PBUS.sessionManager.logout(DriverHomeActivity.this, 2);
+                drawerLayout.closeDrawers();
+                break;
         }
     }
 }

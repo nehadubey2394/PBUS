@@ -17,17 +17,11 @@ import com.pbus.utility.PBUS;
  */
 
 public class SessionManager {
-    private Context context;
-
-    private static SessionManager instance = null;
-
     private static final String PREF_NAME = "PBUS";
     private static final String PREF_REMEMBER_SELLER = "prefRememberSeller";
     private static final String PREF_REMEMBER_DRIVER = "prefRememberDriver";
-
     private static final String PREF_TYPE = "prefType";
     private static final String IS_LOGGEDIN = "isLoggedIn2";
-
     private static final String USER_ID = "userId";
     private static final String FULLNAME = "fullName";
     private static final String EMAIL = "email";
@@ -35,15 +29,14 @@ public class SessionManager {
     private static final String USERIMAGE = "userImage";
     private static final String AUTH_TOKEN = "authToken";
     private static final String THUMB_IMAGE = "thumbImage";
-
     private static final String TYPE="type";
     private static final String REMEMBER_NAME="rememberName";
     private static final String REMEMBER_PWD="rememberPwd";
-
     private static final String TYPE2="type";
     private static final String REMEMBER_NAME2="rememberName";
     private static final String REMEMBER_PWD2="rememberPwd";
-
+    private static SessionManager instance = null;
+    private Context context;
     private SharedPreferences mypref;
     private SharedPreferences.Editor editor;
 
@@ -138,12 +131,13 @@ public class SessionManager {
         return mypref.getBoolean(IS_LOGGEDIN, false);
     }
 
-    public void logout(Activity activity) {
+    public void logout(Activity activity, int preSelect) {
         editor.putBoolean(IS_LOGGEDIN, false);
         editor.clear();
         editor.commit();
 
         Intent intent = new Intent(activity, WelcomeActivity.class);
+        intent.putExtra("preSelect", preSelect);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         activity.startActivity(intent);
         activity.finish();

@@ -2,23 +2,21 @@ package com.pbus.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pbus.R;
-import com.pbus.helper.SessionManager;
 
 public class WelcomeActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private int type, lastClicked = 0;
+    private int lastClicked = 0;
     private Context context=this;
+    private FrameLayout mainLaySeller, mainLayDriver;
 
 
     @Override
@@ -26,7 +24,25 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        setClick(findViewById(R.id.mainLaySeller),findViewById(R.id.mainLayDriver));
+        setClick(mainLaySeller = findViewById(R.id.mainLaySeller), mainLayDriver = findViewById(R.id.mainLayDriver));
+
+        setPreselected();
+    }
+
+    private void setPreselected() {
+        Intent i = getIntent();
+        if (i != null && i.hasExtra("preSelect")) {
+            int select = i.getIntExtra("preSelect", 0);
+            if (select == 1) {
+                setLastClickedRes();
+                setResours(mainLaySeller, true);
+                lastClicked = 0;
+            } else if (select == 2) {
+                setLastClickedRes();
+                setResours(mainLayDriver, true);
+                lastClicked = 1;
+            }
+        }
     }
 
     private void setClick(View... view) {
