@@ -41,6 +41,7 @@ public class SellerMainActivity extends AppCompatActivity implements View.OnClic
 
     private ArrayList<String> drawerItemList;
     private DrawerAdapter drawerAdapter;
+    private View toolbar;
 
     private boolean doubleBackPress;
 
@@ -79,6 +80,7 @@ public class SellerMainActivity extends AppCompatActivity implements View.OnClic
         tvFullName=findViewById(R.id.tvFullName);
         tvUserType=findViewById(R.id.tvUserType);
         imgDrawerCancel=findViewById(R.id.imgDrawerCancel);
+        toolbar = findViewById(R.id.toolbar);
 
         RecyclerView rvSeller=findViewById(R.id.rvSeller);
 
@@ -134,8 +136,12 @@ public class SellerMainActivity extends AppCompatActivity implements View.OnClic
         actionBarDrawerToggle.syncState();
     }
 
+    public UserInfoBean getUserInfo() {
+        return PBUS.sessionManager.getUserInfo();
+    }
+
     private void setProfileData() {
-        UserInfoBean bean=PBUS.sessionManager.getUserInfo();
+        UserInfoBean bean = getUserInfo();
 
         Picasso.with(context).load(bean.thumbImage).placeholder(R.drawable.ic_profile_holder).into(imgProfile);
         tvFullName.setText(bean.full_name);
@@ -216,6 +222,7 @@ public class SellerMainActivity extends AppCompatActivity implements View.OnClic
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 getWindow().setEnterTransition(null);
             }
+            removeToolbar();
             fragmentTransaction.add(R.id.frame_fragments_seller, fragmentHolder,fragmentName).addToBackStack(fragmentName);
             fragmentTransaction.commit();
 
@@ -225,6 +232,14 @@ public class SellerMainActivity extends AppCompatActivity implements View.OnClic
             e.printStackTrace();
             return null;
         }
+    }
+
+    private void removeToolbar() {
+        toolbar.setVisibility(View.GONE);
+    }
+
+    private void showToolbar() {
+        toolbar.setVisibility(View.VISIBLE);
     }
 
     public void hideKeyBoard() {
@@ -245,6 +260,7 @@ public class SellerMainActivity extends AppCompatActivity implements View.OnClic
         Handler handler = new Handler();
         Runnable runnable;
         if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
+            if (toolbar.getVisibility() == View.GONE) showToolbar();
             super.onBackPressed();
         } else {
             handler.postDelayed(runnable = new Runnable() {

@@ -32,7 +32,6 @@
     <string name="from">From</string>
     <string name="source_location">Source Location</string>
     <string name="to">To</string>
-    <string name="destination_location">Destination Location</string>
     <string name="select_date">Select Date</string>
     <string name="search">Search</string>
     <string name="drawer_open">Open</string>
@@ -41,7 +40,20 @@
     <string name="home">Home</string>
     <string name="email_id">Email Id</string>
     <string name="premium_bus_rapid_2018">Premium bus rapid@ 2018</string>
+    <string name="my_profile">My Profile</string>
+    <string name="contact_number">Contact Number</string>
+    <string name="na">NA</string>
+    <string name="address">Address</string>
+    <string name="seller_id">Seller Id</string>
+    <string name="no_buses_available">No Buses Available</string>
+    <string name="seats">Seats</string>
+    <string name="fareDash">Fare - </string>
+    <string name="total">Total</string>
 
-
+    <string name="pickup_location">Pickup Location</string>
+    <string name="destination_location">Destination Location</string>
+    <string name="total_seats">Total Seats</string>
+    <string name="fare">Fare</string>
+    <string name="confirm_bookings">Confirm Bookings</string>
 
 </resources>

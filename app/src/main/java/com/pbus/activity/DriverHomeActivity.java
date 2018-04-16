@@ -115,8 +115,12 @@ public class DriverHomeActivity extends AppCompatActivity implements View.OnClic
         actionBarDrawerToggle.syncState();
     }
 
+    public UserInfoBean getUserInfo() {
+        return PBUS.sessionManager.getUserInfo();
+    }
+
     private void setProfileData() {
-        UserInfoBean bean= PBUS.sessionManager.getUserInfo();
+        UserInfoBean bean = getUserInfo();
 
         Picasso.with(context).load(bean.thumbImage).placeholder(R.drawable.ic_profile_holder).into(imgProfile);
         tvFullName.setText(bean.full_name);

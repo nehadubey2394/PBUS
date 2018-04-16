@@ -162,7 +162,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     String message = jsonObject.getString("message");
 
                     if (status.equalsIgnoreCase("success")) {
-                        MyToast.getInstance(context).customToast(jsonObject.getString("userInfo"));
+                        MyToast.getInstance(context).customToast(message);
                     } else {
                         MyToast.getInstance(context).customToast("Please enter correct email id");
                     }

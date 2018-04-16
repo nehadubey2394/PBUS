@@ -1,9 +1,9 @@
-<ScrollView android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:overScrollMode="never"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     tools:context="com.pbus.fragment.seller.NewBookingFragment">
 
 <LinearLayout
@@ -15,10 +15,10 @@
         android:id="@+id/mainCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/white"
+        android:layout_marginBottom="@dimen/_10sdp"
         android:layout_marginLeft="@dimen/_5sdp"
         android:layout_marginRight="@dimen/_5sdp"
-        android:layout_marginBottom="@dimen/_10sdp"
+        app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="@dimen/_5sdp"
         app:cardElevation="@dimen/_2sdp">
 
@@ -30,27 +30,27 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_marginTop="@dimen/_20sdp"
-                android:paddingRight="@dimen/_10sdp"
-                android:paddingLeft="@dimen/_10sdp">
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/_10sdp"
+                android:paddingRight="@dimen/_10sdp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/_20sdp"
-                    android:textSize="@dimen/_11sdp"
-                    android:textColor="@color/loginNFieldTxt"
                     android:fontFamily="@font/poppins_regular"
-                    android:text="@string/from"/>
+                    android:text="@string/from"
+                    android:textColor="@color/loginNFieldTxt"
+                    android:textSize="@dimen/_11sdp" />
 
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_35sdp"
                     android:layout_margin="@dimen/_5sdp"
-                    app:cardElevation="@dimen/_2sdp"
+                    app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="@dimen/_12sdp"
-                    app:cardBackgroundColor="@color/white">
+                    app:cardElevation="@dimen/_2sdp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -59,38 +59,30 @@
 
                         <android.support.v7.widget.AppCompatImageView
                             android:id="@+id/startPin"
-                            android:layout_marginLeft="@dimen/_10sdp"
                             android:layout_width="@dimen/_20sdp"
                             android:layout_height="@dimen/_20sdp"
                             android:layout_centerVertical="true"
-                            app:srcCompat="@drawable/ic_source_pin"/>
-
-                        <TextView
-                            android:layout_toRightOf="@id/startPin"
                             android:layout_marginLeft="@dimen/_10sdp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/_10sdp"
-                            android:textColor="@color/grey2"
-                            android:layout_centerVertical="true"
-                            android:fontFamily="@font/poppins_regular"
-                            android:text="@string/source_location"/>
+                            app:srcCompat="@drawable/ic_source_pin" />
+
 
                         <android.support.v7.widget.AppCompatImageView
                             android:layout_width="@dimen/_20sdp"
                             android:layout_height="@dimen/_20sdp"
-                            android:padding="@dimen/_4sdp"
-                            app:srcCompat="@drawable/ic_down_arrow"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                            android:layout_marginRight="@dimen/_10sdp"/>
+                            android:layout_marginRight="@dimen/_10sdp"
+                            android:padding="@dimen/_4sdp"
+                            app:srcCompat="@drawable/ic_down_arrow" />
 
                         <Spinner
                             android:id="@+id/spinnerSource"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@drawable/transparent"
-                            android:gravity="center_vertical" />
+                            android:gravity="center_vertical"
+                            android:overlapAnchor="false"
+                            android:spinnerMode="dropdown" />
 
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
@@ -106,19 +98,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/_30sdp"
-                    android:textSize="@dimen/_11sdp"
-                    android:textColor="@color/loginNFieldTxt"
                     android:fontFamily="@font/poppins_regular"
                     android:gravity="bottom"
-                    android:text="@string/to"/>
+                    android:text="@string/to"
+                    android:textColor="@color/loginNFieldTxt"
+                    android:textSize="@dimen/_11sdp" />
 
                 <android.support.v7.widget.AppCompatImageView
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
                     android:layout_alignParentRight="true"
-                    android:padding="@dimen/_3sdp"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/_10sdp"
+                    android:padding="@dimen/_3sdp"
                     app:srcCompat="@drawable/ic_sort"/>
 
             </RelativeLayout>
@@ -126,16 +118,16 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingRight="@dimen/_10sdp"
-                android:paddingLeft="@dimen/_10sdp">
+                android:paddingLeft="@dimen/_10sdp"
+                android:paddingRight="@dimen/_10sdp">
 
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_35sdp"
                     android:layout_margin="@dimen/_5sdp"
-                    app:cardElevation="@dimen/_2sdp"
+                    app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="@dimen/_12sdp"
-                    app:cardBackgroundColor="@color/white">
+                    app:cardElevation="@dimen/_2sdp">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -144,77 +136,70 @@
 
                         <android.support.v7.widget.AppCompatImageView
                             android:id="@+id/endPin"
-                            android:layout_marginLeft="@dimen/_10sdp"
                             android:layout_width="@dimen/_20sdp"
                             android:layout_height="@dimen/_20sdp"
                             android:layout_centerVertical="true"
-                            app:srcCompat="@drawable/ic_destination_pin"/>
-
-                        <TextView
-                            android:layout_toRightOf="@id/endPin"
                             android:layout_marginLeft="@dimen/_10sdp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/_10sdp"
-                            android:textColor="@color/grey2"
-                            android:layout_centerVertical="true"
-                            android:fontFamily="@font/poppins_regular"
-                            android:text="@string/destination_location"/>
+                            app:srcCompat="@drawable/ic_destination_pin" />
 
                         <android.support.v7.widget.AppCompatImageView
                             android:layout_width="@dimen/_20sdp"
                             android:layout_height="@dimen/_20sdp"
-                            android:padding="@dimen/_4sdp"
-                            app:srcCompat="@drawable/ic_down_arrow"
                             android:layout_alignParentRight="true"
                             android:layout_centerVertical="true"
-                            android:layout_marginRight="@dimen/_10sdp"/>
+                            android:layout_marginRight="@dimen/_10sdp"
+                            android:padding="@dimen/_4sdp"
+                            app:srcCompat="@drawable/ic_down_arrow" />
 
                         <Spinner
                             android:id="@+id/spinnerDest"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@drawable/transparent"
-                            android:gravity="center_vertical" />
+                            android:gravity="center_vertical"
+                            android:overlapAnchor="false"
+                            android:spinnerMode="dropdown" />
+
 
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
             </RelativeLayout>
 
             <LinearLayout
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginLeft="@dimen/_13sdp"
-                android:layout_marginRight="@dimen/_13sdp"
-                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_13sdp"
+                android:layout_marginRight="@dimen/_13sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_marginRight="@dimen/_7sdp"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/_7sdp"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/_11sdp"
-                        android:textColor="@color/loginNFieldTxt"
-                        android:fontFamily="@font/poppins_regular"
                         android:layout_marginLeft="@dimen/_20sdp"
-                        android:text="@string/from"/>
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="@string/from"
+                        android:textColor="@color/loginNFieldTxt"
+                        android:textSize="@dimen/_11sdp" />
 
                     <android.support.v7.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_35sdp"
-                        app:cardElevation="@dimen/_2sdp"
                         android:layout_margin="@dimen/_2sdp"
+                        app:cardBackgroundColor="@color/white"
                         app:cardCornerRadius="@dimen/_12sdp"
-                        app:cardBackgroundColor="@color/white">
+                        app:cardElevation="@dimen/_2sdp">
 
                         <RelativeLayout
+                            android:id="@+id/rlFromDate"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
@@ -222,30 +207,31 @@
 
                             <android.support.v7.widget.AppCompatImageView
                                 android:id="@+id/imgCal1"
-                                android:layout_marginLeft="@dimen/_10sdp"
                                 android:layout_width="@dimen/_15sdp"
                                 android:layout_height="@dimen/_15sdp"
                                 android:layout_centerVertical="true"
+                                android:layout_marginLeft="@dimen/_10sdp"
                                 app:srcCompat="@drawable/ic_calendar"/>
 
                             <TextView
-                                android:layout_toRightOf="@id/imgCal1"
-                                android:layout_marginLeft="@dimen/_10sdp"
+                                android:id="@+id/tvFromDate"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="@dimen/_10sdp"
-                                android:textColor="@color/grey2"
                                 android:layout_centerVertical="true"
+                                android:layout_marginLeft="@dimen/_10sdp"
+                                android:layout_toRightOf="@id/imgCal1"
                                 android:fontFamily="@font/poppins_regular"
-                                android:text="@string/select_date"/>
+                                android:hint="@string/select_date"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_10sdp" />
 
                             <android.support.v7.widget.AppCompatImageView
                                 android:layout_width="@dimen/_20sdp"
                                 android:layout_height="@dimen/_20sdp"
-                                android:padding="@dimen/_4sdp"
-                                app:srcCompat="@drawable/ic_down_arrow"
                                 android:layout_alignParentRight="true"
-                                android:layout_marginRight="@dimen/_5sdp"/>
+                                android:layout_marginRight="@dimen/_5sdp"
+                                android:padding="@dimen/_4sdp"
+                                app:srcCompat="@drawable/ic_down_arrow" />
 
 
                         </RelativeLayout>
@@ -254,30 +240,31 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginLeft="@dimen/_7sdp"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_7sdp"
+                    android:layout_weight="1"
                     android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/_11sdp"
-                        android:textColor="@color/loginNFieldTxt"
-                        android:fontFamily="@font/poppins_regular"
                         android:layout_marginLeft="@dimen/_20sdp"
-                        android:text="@string/to"/>
+                        android:fontFamily="@font/poppins_regular"
+                        android:text="@string/to"
+                        android:textColor="@color/loginNFieldTxt"
+                        android:textSize="@dimen/_11sdp" />
 
                     <android.support.v7.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_35sdp"
-                        app:cardElevation="@dimen/_2sdp"
                         android:layout_margin="@dimen/_2sdp"
+                        app:cardBackgroundColor="@color/white"
                         app:cardCornerRadius="@dimen/_12sdp"
-                        app:cardBackgroundColor="@color/white">
+                        app:cardElevation="@dimen/_2sdp">
 
                         <RelativeLayout
+                            android:id="@+id/rlToDate"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
@@ -285,30 +272,31 @@
 
                             <android.support.v7.widget.AppCompatImageView
                                 android:id="@+id/imgCal2"
-                                android:layout_marginLeft="@dimen/_10sdp"
                                 android:layout_width="@dimen/_15sdp"
                                 android:layout_height="@dimen/_15sdp"
                                 android:layout_centerVertical="true"
+                                android:layout_marginLeft="@dimen/_10sdp"
                                 app:srcCompat="@drawable/ic_calendar"/>
 
                             <TextView
-                                android:layout_toRightOf="@id/imgCal2"
-                                android:layout_marginLeft="@dimen/_10sdp"
+                                android:id="@+id/tvToDate"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="@dimen/_10sdp"
-                                android:textColor="@color/grey2"
                                 android:layout_centerVertical="true"
+                                android:layout_marginLeft="@dimen/_10sdp"
+                                android:layout_toRightOf="@id/imgCal2"
                                 android:fontFamily="@font/poppins_regular"
-                                android:text="@string/select_date"/>
+                                android:hint="@string/select_date"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_10sdp" />
 
                             <android.support.v7.widget.AppCompatImageView
                                 android:layout_width="@dimen/_20sdp"
                                 android:layout_height="@dimen/_20sdp"
-                                android:padding="@dimen/_4sdp"
-                                app:srcCompat="@drawable/ic_down_arrow"
                                 android:layout_alignParentRight="true"
-                                android:layout_marginRight="@dimen/_5sdp"/>
+                                android:layout_marginRight="@dimen/_5sdp"
+                                android:padding="@dimen/_4sdp"
+                                app:srcCompat="@drawable/ic_down_arrow" />
 
 
                         </RelativeLayout>
@@ -320,15 +308,15 @@
 
             <TextView
                 android:id="@+id/tvSearch"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:layout_marginBottom="@dimen/_15sdp"
-                android:layout_gravity="center"
                 android:layout_width="@dimen/_175sdp"
                 android:layout_height="@dimen/_35sdp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_20sdp"
                 android:background="@drawable/blue_rounded_corner_bg"
-                android:text="@string/search"
-                android:gravity="center"
                 android:fontFamily="@font/poppins_regular"
+                android:gravity="center"
+                android:text="@string/search"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14sdp"/>
 
@@ -339,23 +327,23 @@
     <android.support.v7.widget.AppCompatImageView
         android:layout_width="@dimen/_200sdp"
         android:layout_height="@dimen/_100sdp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_10sdp"
         android:padding="@dimen/_10sdp"
-        android:layout_gravity="center"
-        app:srcCompat="@drawable/ic_bus"
-        android:layout_marginBottom="@dimen/_10sdp"/>
+        app:srcCompat="@drawable/ic_bus" />
 
     <TextView
-        android:layout_marginBottom="@dimen/_50sdp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_50sdp"
         android:fontFamily="@font/poppins_light"
-        android:textSize="@dimen/_11sdp"
         android:gravity="center"
         android:paddingLeft="@dimen/_15sdp"
         android:paddingRight="@dimen/_15sdp"
         android:text="Lorem Ipsum is simply dummy text of the printing \nand typesetting industry. Lorem ipsum h"
-        android:textColor="@color/grey2"/>
+        android:textColor="@color/grey2"
+        android:textSize="@dimen/_11sdp" />
 
 </LinearLayout>
 
