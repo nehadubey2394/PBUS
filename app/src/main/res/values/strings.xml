@@ -46,6 +46,7 @@
     <string name="address">Address</string>
     <string name="seller_id">Seller Id</string>
     <string name="no_buses_available">No Buses Available</string>
+    <string name="available_buses">Available Buses</string>
     <string name="seats">Seats</string>
     <string name="fareDash">Fare - </string>
     <string name="total">Total</string>
@@ -55,5 +56,7 @@
     <string name="total_seats">Total Seats</string>
     <string name="fare">Fare</string>
     <string name="confirm_bookings">Confirm Bookings</string>
+
+    <string name="bus_detail">Bus Details</string>
 
 </resources>

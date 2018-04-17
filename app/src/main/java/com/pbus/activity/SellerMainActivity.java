@@ -24,13 +24,14 @@ import com.pbus.adapter.DrawerAdapter;
 import com.pbus.bean.UserInfoBean;
 import com.pbus.fragment.seller.NewBookingFragment;
 import com.pbus.listener.AdapterListener;
+import com.pbus.listener.DrawerLock;
 import com.pbus.utility.MyToast;
 import com.pbus.utility.PBUS;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class SellerMainActivity extends AppCompatActivity implements View.OnClickListener, AdapterListener {
+public class SellerMainActivity extends AppCompatActivity implements View.OnClickListener, AdapterListener, DrawerLock {
 
     private Context context=this;
     private DrawerLayout drawerLayout;
@@ -50,7 +51,14 @@ public class SellerMainActivity extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seller_main);
         initView();
-        initNavigationDrawer();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                initNavigationDrawer();
+            }
+        }, 700);
+
 
         /*final NoConnectionDialog network =  new NoConnectionDialog(SellerMainActivity.this, new NoConnectionDialog.Listener() {
             @Override
@@ -238,7 +246,7 @@ public class SellerMainActivity extends AppCompatActivity implements View.OnClic
         toolbar.setVisibility(View.GONE);
     }
 
-    private void showToolbar() {
+    public void showToolbar() {
         toolbar.setVisibility(View.VISIBLE);
     }
 
@@ -260,7 +268,6 @@ public class SellerMainActivity extends AppCompatActivity implements View.OnClic
         Handler handler = new Handler();
         Runnable runnable;
         if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
-            if (toolbar.getVisibility() == View.GONE) showToolbar();
             super.onBackPressed();
         } else {
             handler.postDelayed(runnable = new Runnable() {
@@ -284,7 +291,9 @@ public class SellerMainActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void drawerItemSelected(int position) {
         switch (position){
-            case 0: MyToast.getInstance(context).customToast(getResources().getString(R.string.underDev)); drawerLayout.closeDrawers(); break;
+            case 0:
+                replaceFragment(new NewBookingFragment());
+                break;
             case 1: MyToast.getInstance(context).customToast(getResources().getString(R.string.underDev)); drawerLayout.closeDrawers(); break;
             case 2: MyToast.getInstance(context).customToast(getResources().getString(R.string.underDev)); drawerLayout.closeDrawers(); break;
             case 3: MyToast.getInstance(context).customToast(getResources().getString(R.string.underDev)); drawerLayout.closeDrawers(); break;
@@ -295,5 +304,12 @@ public class SellerMainActivity extends AppCompatActivity implements View.OnClic
                 drawerLayout.closeDrawers();
                 break;
         }
+    }
+
+    @Override
+    public void setDrawerEnabled(boolean enabled) {
+        int lockMode = enabled ? DrawerLayout.LOCK_MODE_UNLOCKED : DrawerLayout.LOCK_MODE_LOCKED_CLOSED;
+        drawerLayout.setDrawerLockMode(lockMode);
+        //toggle.setDrawerIndicatorEnabled(enabled);
     }
 }

@@ -18,10 +18,11 @@ import com.pbus.R;
 import com.pbus.activity.SellerMainActivity;
 import com.pbus.adapter.DestLocationAdapter;
 import com.pbus.adapter.SourceLocationAdapter;
+import com.pbus.bean.BusListBean;
 import com.pbus.bean.RouteListBean;
 import com.pbus.helper.Webservices;
 import com.pbus.utility.MyToast;
-import com.pbus.utility.Progress;
+import com.pbus.utility.Util;
 import com.pbus.volleymultipart.VolleyGetPost;
 
 import org.json.JSONArray;
@@ -102,7 +103,7 @@ public class NewBookingFragment extends Fragment implements View.OnClickListener
                 } else {
                     sourceId = "";
                 }
-
+                spinnerDest.setSelection(0);
             }
 
             @Override
@@ -115,7 +116,9 @@ public class NewBookingFragment extends Fragment implements View.OnClickListener
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
                 if (position > 0) {
-                    destId = desList.get(position).stationId;
+                    if (desList.get(position).stationId.equalsIgnoreCase(sourceId)) {
+                        spinnerDest.setSelection(0);
+                    } else destId = desList.get(position).stationId;
                 } else {
                     destId = "";
                 }
@@ -170,7 +173,6 @@ public class NewBookingFragment extends Fragment implements View.OnClickListener
 
             @Override
             public void onNetError() {
-                Progress.hide(activity);
             }
 
             @Override
@@ -181,6 +183,7 @@ public class NewBookingFragment extends Fragment implements View.OnClickListener
             @Override
             public Map<String, String> setHeaders(Map<String, String> params) {
                 params.put("authToken", activity.getUserInfo().authToken);
+                Util.e(TAG + " authToken", params.toString());
                 return params;
             }
         }.executeVolley();
@@ -196,13 +199,7 @@ public class NewBookingFragment extends Fragment implements View.OnClickListener
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.tvSearch:
-                if (sourceId.isEmpty() && destId.isEmpty()) {
-                    MyToast.getInstance(activity).customToast("Please select start end location");
-                } else if (fromDate.isEmpty() && toDate.isEmpty()) {
-                    MyToast.getInstance(activity).customToast("Please select from and to date");
-                } else {
-                    getBusList();
-                }
+                if (verifySearchData()) getBusList();
                 break;
 
             case R.id.rlFromDate:
@@ -228,31 +225,37 @@ public class NewBookingFragment extends Fragment implements View.OnClickListener
                     JSONObject jsonObject = new JSONObject(response);
                     String status = jsonObject.getString("status");
                     String message = jsonObject.getString("message");
-
+                    ArrayList<BusListBean> list = new ArrayList<>();
+                    String from = "", to = "";
                     if (status.equalsIgnoreCase("success")) {
-                        activity.addFragment(new AvailableBusesFragment());
 
-                      /*  JSONArray jArray=jsonObject.getJSONArray("stationList");
+                        //object inside another object handle
+                        JSONObject object = jsonObject.getJSONObject("formToDate");
+                        from = object.getString("from");
+                        to = object.getString("to");
+
+                        JSONArray jArray = jsonObject.getJSONArray("busList");
                         for (int i=0;i<jArray.length();i++){
                             JSONObject jObj=jArray.getJSONObject(i);
-                            RouteListBean bean=new RouteListBean();
+                            BusListBean bean = new BusListBean();
 
-                            bean.stationId=jObj.getString("stationId");
-                            bean.station_name=jObj.getString("station_name");
+                            bean.busId = jObj.getString("busId");
+                            bean.bus_name = jObj.getString("bus_name");
+                            bean.bus_number = jObj.getString("bus_number");
+                            bean.bus_seats = jObj.getString("bus_seats");
+                            bean.bus_time = jObj.getString("bus_time");
+                            bean.bus_fare = jObj.getString("bus_fare");
+                            bean.source = jObj.getString("source");
+                            bean.destination = jObj.getString("destination");
 
-                            sourceList.add(bean);
+                            list.add(bean);
                         }
 
-                        desList.addAll(sourceList);
+                        activity.addFragment(AvailableBusesFragment.newInstance(list, from, to));
 
-                        //custom adapter for source spinner
-                        SourceLocationAdapter adapterSource = new SourceLocationAdapter(activity, sourceList);
-                        spinnerSource.setAdapter(adapterSource);
 
-                        //custom adapter for Dest spinner
-                        DestLocationAdapter adapterDest = new DestLocationAdapter(activity, desList);
-                        spinnerDest.setAdapter(adapterDest);*/
-
+                    } else if (message.equalsIgnoreCase("No Buses Available")) {
+                        activity.addFragment(AvailableBusesFragment.newInstance(list, from, to));
                     } else {
                         MyToast.getInstance(activity).customToast(message);
                     }
@@ -264,7 +267,6 @@ public class NewBookingFragment extends Fragment implements View.OnClickListener
 
             @Override
             public void onNetError() {
-                Progress.hide(activity);
             }
 
             @Override
@@ -324,6 +326,21 @@ public class NewBookingFragment extends Fragment implements View.OnClickListener
         }
     }
 
+    private boolean verifySearchData() {
+        if (sourceId.isEmpty()) {
+            MyToast.getInstance(activity).customToast("Please select source location");
+            return false;
+        } else if (destId.isEmpty()) {
+            MyToast.getInstance(activity).customToast("Please select destination location");
+            return false;
+        } else if (fromDate.isEmpty()) {
+            MyToast.getInstance(activity).customToast("Please select from date");
+            return false;
+        } else if (toDate.isEmpty()) {
+            MyToast.getInstance(activity).customToast("Please select to date");
+            return false;
+        } else return true;
+    }
 
 /* get Date end here */
 }

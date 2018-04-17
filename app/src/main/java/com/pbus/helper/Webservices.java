@@ -11,5 +11,5 @@ public class Webservices {
     public static final String FORGOT = BASE_URL + "service/forgotPassword";
     public static final String ROUTE_LIST = BASE_URL + "service/stations/getStation";
     public static final String BUS_LIST = BASE_URL + "service/buses/getBuses";
-
+    public static final String BUS_DETAIL = BASE_URL + "service/buses/getBusDetails";
 }

@@ -19,7 +19,6 @@ import com.pbus.bean.UserInfoBean;
 import com.pbus.helper.Webservices;
 import com.pbus.utility.MyToast;
 import com.pbus.utility.PBUS;
-import com.pbus.utility.Progress;
 import com.pbus.utility.Util;
 import com.pbus.utility.Validation;
 import com.pbus.volleymultipart.VolleyGetPost;
@@ -173,7 +172,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onNetError() {
-                Progress.hide(context);
+
             }
 
             @Override
@@ -239,7 +238,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onNetError() {
-                Progress.hide(context);
             }
 
             @Override

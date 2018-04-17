@@ -31,7 +31,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.MessageDigest;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -55,6 +58,30 @@ public class Util {
             inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public static String format12HourTime(String bus_time, String pFormat, String dFormat) {
+        try {
+            SimpleDateFormat parseFormat = new SimpleDateFormat(pFormat, Locale.US);
+            SimpleDateFormat displayFormat = new SimpleDateFormat(dFormat, Locale.US);
+            Date dTime = parseFormat.parse(bus_time);
+            return displayFormat.format(dTime);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    public static String formatDate(String date, String pFormat, String dFormat) {
+        try {
+            SimpleDateFormat parseFormat = new SimpleDateFormat(pFormat, Locale.getDefault());
+            SimpleDateFormat displayFormat = new SimpleDateFormat(dFormat, Locale.getDefault());
+            Date dTime = parseFormat.parse(date);
+            return displayFormat.format(dTime);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
         }
     }
 

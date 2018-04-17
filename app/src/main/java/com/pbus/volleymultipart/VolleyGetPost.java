@@ -34,6 +34,7 @@ public abstract class VolleyGetPost {
     private String url;
     private Boolean isMethodPost;
     private Activity activity;
+    private Progress progress;
 
 
     public VolleyGetPost(Activity activity, String url,Boolean isMethodPost,String TAG){
@@ -41,6 +42,7 @@ public abstract class VolleyGetPost {
         this.url=url;
         this.isMethodPost=isMethodPost;
         this.TAG=TAG;
+        progress = new Progress(activity);
     }
 
     public void executeVolley(){
@@ -48,20 +50,21 @@ public abstract class VolleyGetPost {
 
         if (Util.isNetworkAvailable(activity, activity.getWindow().getDecorView())) {
             Util.hideSoftKeyboard(activity);
-            Progress.showProgressOnly(activity);
+            progress.setCancelable(false);
+            progress.show();
             StringRequest stringRequest = new StringRequest(methodType, url,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
                             Util.e(TAG, "onResponse: " + response);
-                            Progress.hide(activity);
+                            progress.cancel();
                             onVolleyResponse(response);
                         }
                     },
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Progress.hide(activity);
+                            progress.cancel();
                             volleyErrorHandle(error);
                         }
                     }) {

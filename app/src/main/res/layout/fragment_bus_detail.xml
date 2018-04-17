@@ -33,7 +33,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="@dimen/_15sdp"
-                    android:layout_marginTop="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
                     android:orientation="vertical">
 
                     <RelativeLayout
@@ -114,6 +114,7 @@
 
 
                             <TextView
+                                android:id="@+id/sourceLoc"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_minus5sdp"
@@ -144,6 +145,7 @@
 
 
                             <TextView
+                                android:id="@+id/tvDestLoc"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/_minus5sdp"
@@ -175,6 +177,7 @@
                             android:textSize="@dimen/_12sdp" />
 
                         <TextView
+                            android:id="@+id/tvTotalSeat"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/_5sdp"
@@ -214,7 +217,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_10sdp">
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp">
 
                         <TextView
                             android:id="@+id/tvFromDate"
