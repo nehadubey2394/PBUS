@@ -67,6 +67,7 @@ public class NewBookingFragment extends Fragment implements View.OnClickListener
                 tvFromDate.setText(date);
                 fromDate = tvFromDate.getText().toString();
                 tvToDate.setText("");
+                toDate = "";
             }
             else {
                     if (verifyDate(date, fromDate)) {
@@ -135,6 +136,7 @@ public class NewBookingFragment extends Fragment implements View.OnClickListener
                 if (position > 0) {
                     if (desList.get(position).stationId.equalsIgnoreCase(sourceId)) {
                         spinnerDest.setSelection(0);
+                        MyToast.getInstance(getContext()).customToast("Sorry, Source And Destination Can't Be Same");
                     } else {
                         destId = desList.get(position).stationId;
                         new Handler().postDelayed(new Runnable() {

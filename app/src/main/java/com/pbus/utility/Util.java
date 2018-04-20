@@ -12,7 +12,6 @@ import android.os.Environment;
 import android.os.StatFs;
 import android.support.design.widget.Snackbar;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
@@ -45,7 +44,7 @@ import java.util.regex.Pattern;
 public class Util {
 
     public static void e(String tag , String msg){
-         Log.e(tag,msg);
+        //  Log.e(tag,msg);
     }
 
     public static void hideSoftKeyboard(Activity activity) {
