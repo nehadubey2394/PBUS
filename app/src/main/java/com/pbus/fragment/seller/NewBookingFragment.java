@@ -3,6 +3,7 @@ package com.pbus.fragment.seller;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -43,9 +44,10 @@ public class NewBookingFragment extends Fragment implements View.OnClickListener
     private SellerMainActivity activity;
     private ArrayList<RouteListBean> sourceList, desList;
     private Spinner spinnerSource, spinnerDest;
-    private TextView tvFromDate, tvToDate;
+    private TextView tvFromDate, tvToDate, tvDestLoc, tvSource;
     private boolean isFromDate;
     private String sourceId = "", destId = "", fromDate = "", toDate = "";
+    private int sPos = 0, dPos;
     private DatePickerDialog.OnDateSetListener datePicker = new DatePickerDialog.OnDateSetListener() {
         // the callback received when the user "sets" the Date in the
         // DatePickerDialog
@@ -56,16 +58,21 @@ public class NewBookingFragment extends Fragment implements View.OnClickListener
             month = (selectedMonth < 10) ? "0" + selectedMonth : String.valueOf(selectedMonth);
 
             String date = day + "-" + month + "-" + selectedYear;
-            fromDate = tvFromDate.getText().toString();
-            if (isFromDate) tvFromDate.setText(date);
-            else {
-                if (verifyDate(date, fromDate)) {
-                    tvToDate.setText(date);
-                    toDate = date;
-                }
 
+            if (isFromDate) {
+                tvFromDate.setText(date);
+                fromDate = tvFromDate.getText().toString();
             }
-
+            else {
+                if (fromDate.isEmpty()) {
+                    MyToast.getInstance(activity).customToast("Please select from date");
+                } else {
+                    if (verifyDate(date, fromDate)) {
+                        tvToDate.setText(date);
+                        toDate = date;
+                    }
+                }
+            }
         }
     };
 
@@ -86,39 +93,56 @@ public class NewBookingFragment extends Fragment implements View.OnClickListener
         v.findViewById(R.id.rlToDate).setOnClickListener(this);
         tvFromDate = v.findViewById(R.id.tvFromDate);
         tvToDate = v.findViewById(R.id.tvToDate);
+        tvSource = v.findViewById(R.id.tvSource);
+        tvDestLoc = v.findViewById(R.id.tvDestLoc);
+        v.findViewById(R.id.imgExchange).setOnClickListener(this);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         desList = new ArrayList<>();
         sourceList = new ArrayList<>();
         getRouteList();
 
         spinnerSource.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+            public void onItemSelected(AdapterView<?> adapterView, View view, final int position, long l) {
                 if (position > 0) {
                     sourceId = sourceList.get(position).stationId;
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            sPos = position;
+                        }
+                    }, 600);
                 } else {
                     sourceId = "";
                 }
-                spinnerDest.setSelection(0);
+                spinnerDest.setSelection(sPos);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
 
         spinnerDest.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+            public void onItemSelected(AdapterView<?> adapterView, View view, final int position, long l) {
                 if (position > 0) {
                     if (desList.get(position).stationId.equalsIgnoreCase(sourceId)) {
                         spinnerDest.setSelection(0);
-                    } else destId = desList.get(position).stationId;
+                    } else {
+                        destId = desList.get(position).stationId;
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                dPos = position;
+                            }
+                        }, 600);
+                    }
                 } else {
                     destId = "";
                 }
@@ -141,6 +165,8 @@ public class NewBookingFragment extends Fragment implements View.OnClickListener
                     String message = jsonObject.getString("message");
 
                     if (status.equalsIgnoreCase("success")) {
+                        tvDestLoc.setVisibility(View.GONE);
+                        tvSource.setVisibility(View.GONE);
                         JSONArray jArray = jsonObject.getJSONArray("stationList");
 
                         for (int i = 0; i < jArray.length(); i++) {
@@ -173,6 +199,10 @@ public class NewBookingFragment extends Fragment implements View.OnClickListener
 
             @Override
             public void onNetError() {
+                tvDestLoc.setVisibility(View.VISIBLE);
+                tvSource.setVisibility(View.VISIBLE);
+                tvSource.setText(R.string.na);
+                tvDestLoc.setText(R.string.na);
             }
 
             @Override
@@ -210,6 +240,13 @@ public class NewBookingFragment extends Fragment implements View.OnClickListener
             case R.id.rlToDate:
                 isFromDate = false;
                 getDate();
+                break;
+
+            case R.id.imgExchange:
+                if (!sourceId.isEmpty() && !destId.isEmpty()) {
+                    spinnerSource.setSelection(dPos);
+                    spinnerDest.setSelection(sPos);
+                }
                 break;
         }
     }
@@ -311,15 +348,11 @@ public class NewBookingFragment extends Fragment implements View.OnClickListener
             Date fDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).parse(fromDate);
             Date sDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).parse(toDate);
 
-            if (fromDate.isEmpty()) {
-                MyToast.getInstance(activity).customToast("Please select from date");
+            if (sDate.before(fDate)) {
+                MyToast.getInstance(activity).customToast("Please select to date which is greater than from date");
                 return false;
-            } else {
-                if (sDate.before(fDate)) {
-                    MyToast.getInstance(activity).customToast("Please select to date which is greater than from date");
-                    return false;
-                } else return true;
-            }
+            } else return true;
+
         } catch (Exception e) {
             e.printStackTrace();
             return false;

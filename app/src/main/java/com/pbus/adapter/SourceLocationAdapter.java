@@ -49,7 +49,9 @@ public class SourceLocationAdapter extends ArrayAdapter {
 
         TextView tvSpinnerName = view.findViewById(R.id.tvSpinnerName);
         tvSpinnerName.setText(bean.station_name);
-        tvSpinnerName.setPadding((int) activity.getResources().getDimension(R.dimen._35sdp), 0, 0, 0);
+
+        int padLeftRight = (int) activity.getResources().getDimension(R.dimen._35sdp);
+        tvSpinnerName.setPadding(padLeftRight, 0, padLeftRight, 0);
 
         if (position == 0) {
             tvSpinnerName.setTextColor(activity.getResources().getColor(R.color.grey2));
@@ -72,7 +74,7 @@ public class SourceLocationAdapter extends ArrayAdapter {
 
         TextView tvSpinnerName = view.findViewById(R.id.tvSpinnerName);
         tvSpinnerName.setText(bean.station_name);
-        tvSpinnerName.setPadding((int) activity.getResources().getDimension(R.dimen._5sdp), 0, 0, 0);
+        tvSpinnerName.setPadding((int) activity.getResources().getDimension(R.dimen._10sdp), 0, 0, 0);
         return view;
     }
 

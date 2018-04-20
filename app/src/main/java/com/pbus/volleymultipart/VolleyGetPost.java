@@ -37,21 +37,22 @@ public abstract class VolleyGetPost {
     private Progress progress;
 
 
-    public VolleyGetPost(Activity activity, String url,Boolean isMethodPost,String TAG){
+    protected VolleyGetPost(Activity activity, String url, Boolean isMethodPost, String TAG) {
         this.activity=activity;
         this.url=url;
         this.isMethodPost=isMethodPost;
         this.TAG=TAG;
         progress = new Progress(activity);
+
+        Util.hideSoftKeyboard(activity);
+        progress.setCancelable(false);
+        progress.show();
     }
 
-    public void executeVolley(){
-        int methodType=(isMethodPost)?Request.Method.POST:Request.Method.GET;
+    public void executeVolley() {
+        int methodType = (isMethodPost) ? Request.Method.POST : Request.Method.GET;
 
         if (Util.isNetworkAvailable(activity, activity.getWindow().getDecorView())) {
-            Util.hideSoftKeyboard(activity);
-            progress.setCancelable(false);
-            progress.show();
             StringRequest stringRequest = new StringRequest(methodType, url,
                     new Response.Listener<String>() {
                         @Override
@@ -87,20 +88,22 @@ public abstract class VolleyGetPost {
                     retryTime, DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         }else{
+            progress.cancel();
             onNetError();
         }
     }
 
     private void volleyErrorHandle(VolleyError error){
         NetworkResponse networkResponse = error.networkResponse;
-        String errorMessage = "Unknown error";
+        String errorMessage;
         if (networkResponse == null) {
             if (error.getClass().equals(TimeoutError.class)) {
                 errorMessage = "Request timeout";
+                MyToast.getInstance(activity).showCustomAlert("Alert", errorMessage);
             } else if (error.getClass().equals(NoConnectionError.class)) {
                 errorMessage = "Failed to connect server, please try again";
+                MyToast.getInstance(activity).showCustomAlert("Alert", errorMessage);
             }
-            MyToast.getInstance(activity).showCustomAlert("Alert",errorMessage);
         } else {
             String result = new String(networkResponse.data);
             try {
@@ -112,18 +115,24 @@ public abstract class VolleyGetPost {
                 Util.e("Error Message", message);
 
                 if (status.equals("300")) {
-
-                    MyToast.getInstance(activity).showLogoutAlert(activity.getResources().getString(R.string.session_expired),activity.getResources().getString(R.string.your_session_is_expired_please_login_again));
+                    if (message.equalsIgnoreCase("You are currently inactive from admin")) {
+                        MyToast.getInstance(activity).showCustomAlert(activity.getResources().getString(R.string.alert), message);
+                    } else {
+                        MyToast.getInstance(activity).showLogoutAlert(activity.getResources().getString(R.string.session_expired), activity.getResources().getString(R.string.your_session_is_expired_please_login_again));
+                    }
                     SessionManager.getInstance().logout(activity, 0);
 
                 } else if (networkResponse.statusCode == 404) {
                     errorMessage = "Resource not found";
+                    MyToast.getInstance(activity).showCustomAlert("Alert", errorMessage);
                 }  else if (networkResponse.statusCode == 500) {
                     errorMessage = message + "Oops! Something went wrong";
+                    MyToast.getInstance(activity).showCustomAlert("Alert", errorMessage);
                 }else {
                     errorMessage = ServerResponseCode.getmeesageCode(networkResponse.statusCode);
+                    MyToast.getInstance(activity).showCustomAlert("Alert", errorMessage);
                 }
-                MyToast.getInstance(activity).showCustomAlert("Alert",errorMessage);
+
             } catch (JSONException e) {
                 MyToast.getInstance(activity).showCustomAlert("Alert",activity.getResources().getString(R.string.something_wrong));
                 e.printStackTrace();

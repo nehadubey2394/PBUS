@@ -4,7 +4,10 @@ import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
+import com.crashlytics.android.Crashlytics;
 import com.pbus.helper.SessionManager;
+
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Created by mindiii on 5/4/18.
@@ -32,6 +35,7 @@ public class PBUS extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
 
         instance = this;
         sessionManager = new SessionManager(instance.getApplicationContext());

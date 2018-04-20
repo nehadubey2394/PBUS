@@ -151,10 +151,14 @@ public class SellerMainActivity extends AppCompatActivity implements View.OnClic
     private void setProfileData() {
         UserInfoBean bean = getUserInfo();
 
-        Picasso.with(context).load(bean.thumbImage).placeholder(R.drawable.ic_profile_holder).into(imgProfile);
-        tvFullName.setText(bean.full_name);
-        String userType= bean.user_type.substring(0,1).toUpperCase() + bean.user_type.substring(1);
-        tvUserType.setText(userType);
+        try {
+            Picasso.with(context).load(bean.thumbImage).placeholder(R.drawable.ic_profile_holder).into(imgProfile);
+            tvFullName.setText(bean.full_name);
+            String userType = bean.user_type.substring(0, 1).toUpperCase() + bean.user_type.substring(1);
+            tvUserType.setText(userType);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void addItemInList() {
@@ -284,15 +288,14 @@ public class SellerMainActivity extends AppCompatActivity implements View.OnClic
                 doubleBackPress = true;
             }
         }
-
     }
-
 
     @Override
     public void drawerItemSelected(int position) {
         switch (position){
             case 0:
                 replaceFragment(new NewBookingFragment());
+                drawerLayout.closeDrawers();
                 break;
             case 1: MyToast.getInstance(context).customToast(getResources().getString(R.string.underDev)); drawerLayout.closeDrawers(); break;
             case 2: MyToast.getInstance(context).customToast(getResources().getString(R.string.underDev)); drawerLayout.closeDrawers(); break;
