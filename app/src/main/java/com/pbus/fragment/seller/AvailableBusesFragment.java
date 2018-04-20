@@ -72,6 +72,7 @@ public class AvailableBusesFragment extends Fragment implements View.OnClickList
         TextView title = view.findViewById(R.id.tvToolbarTitle);
         title.setText(R.string.available_buses);
 
+        view.findViewById(R.id.parentView).setOnClickListener(this);
         LinearLayout linLayNoBusAvail = view.findViewById(R.id.linLayNoBusAvail);
         RecyclerView rlView = view.findViewById(R.id.rvAvailableBus);
 
@@ -110,6 +111,10 @@ public class AvailableBusesFragment extends Fragment implements View.OnClickList
         switch (view.getId()) {
             case R.id.imgToolbarBack:
                 activity.onBackPressed();
+                break;
+
+            case R.id.parentView:
+                //for bg Click
                 break;
         }
     }

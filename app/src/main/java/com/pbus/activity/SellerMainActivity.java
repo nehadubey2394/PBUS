@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -45,11 +46,14 @@ public class SellerMainActivity extends AppCompatActivity implements View.OnClic
     private View toolbar;
 
     private boolean doubleBackPress;
+    // variable to track event time
+    private long mLastClickTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seller_main);
+
         initView();
 
         new Handler().postDelayed(new Runnable() {
@@ -112,6 +116,7 @@ public class SellerMainActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void initNavigationDrawer() {
+
         addItemInList();
         setProfileData();
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, null, R.string.drawer_open, R.string.drawer_close) {
@@ -195,6 +200,12 @@ public class SellerMainActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     public void onClick(View view) {
+        // Preventing multiple clicks, using threshold of 1/2 second
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
+
         switch (view.getId()){
             case R.id.imgDrawerMenu:
                 if (drawerLayout.isDrawerOpen(navigationView)) {
@@ -284,6 +295,7 @@ public class SellerMainActivity extends AppCompatActivity implements View.OnClic
                 handler.removeCallbacks(runnable);
                 finish();
             } else {
+                drawerLayout.closeDrawers();
                 MyToast.getInstance(context).snackbar(imgProfile,"Press back again to exit");
                 doubleBackPress = true;
             }

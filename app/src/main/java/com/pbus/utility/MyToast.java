@@ -19,8 +19,9 @@ import com.pbus.snackBarPackage.TSnackbar;
 
 public class MyToast {
 
-    private Context context;
     private static MyToast instance;
+    private static Toast toast;
+    private Context context;
 
     /**
      * @param context as parent context
@@ -36,6 +37,7 @@ public class MyToast {
     public synchronized static MyToast getInstance(Context context) {
         if (instance == null) {
             instance = new MyToast(context);
+            toast = new Toast(context);
         }
         return instance;
     }
@@ -70,13 +72,16 @@ public class MyToast {
         toast.show();
     }
 
-    public void customToast(final String msg) {
+    public void customToast(String msg) {
+        if (toast != null) toast.cancel();
+        // Create the object once.
+        toast = Toast.makeText(context, "", Toast.LENGTH_SHORT);
 
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         View layout = inflater.inflate(R.layout.custom_toast_layout, null);
         TextView tv_msg = layout.findViewById(R.id.tv_msg);
         tv_msg.setText(msg);
-        Toast toast = new Toast(context);
+
         toast.setGravity(Gravity.FILL_HORIZONTAL | Gravity.BOTTOM, 0, (int) context.getResources().getDimension(R.dimen._10sdp));
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(layout);

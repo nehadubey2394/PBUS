@@ -158,8 +158,8 @@ public class BusDetailFragment extends Fragment implements View.OnClickListener 
         tvDestLoc.setText(bean.destination);
         tvTotalSeat.setText(bean.bus_seats);
         tvFare.setText("$ " + bean.bus_fare);
-        tvFromDate.setText(Util.formatDate(bean.from, "yyyy-MM-dd", "dd/MM/yyyy"));
-        tvToDate.setText(Util.formatDate(bean.to, "yyyy-MM-dd", "dd/MM/yyyy"));
+        tvFromDate.setText(Util.formatDate(bean.from, "yyyy/MM/dd", "dd/MM/yyyy"));
+        tvToDate.setText(Util.formatDate(bean.to, "yyyy/MM/dd", "dd/MM/yyyy"));
 
         tvTime.setText(Util.format12HourTime(bean.bus_time, "HH:mm:ss", "hh:mm a"));
     }

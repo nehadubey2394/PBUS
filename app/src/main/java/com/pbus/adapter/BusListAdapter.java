@@ -1,5 +1,6 @@
 package com.pbus.adapter;
 
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ public class BusListAdapter extends RecyclerView.Adapter<BusListAdapter.ViewHold
     private AvailableBusesFragment fragment;
     private ArrayList<BusListBean> list;
     private SellerMainActivity activity;
+    private boolean multiClick = false;
 
     public BusListAdapter(SellerMainActivity activity, AvailableBusesFragment fragment, ArrayList<BusListBean> list) {
         this.activity = activity;
@@ -80,8 +82,19 @@ public class BusListAdapter extends RecyclerView.Adapter<BusListAdapter.ViewHold
         }
 
         @Override
-        public void onClick(View view) {
-            activity.addFragment(BusDetailFragment.newInstance(fragment.fromDate, fragment.toDate, list.get(getAdapterPosition()).busId));
+        public void onClick(final View view) {
+            view.setEnabled(false);
+            if (!multiClick)
+                activity.addFragment(BusDetailFragment.newInstance(fragment.fromDate, fragment.toDate, list.get(getAdapterPosition()).busId));
+            multiClick = true;
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    view.setEnabled(true);
+                    multiClick = false;
+                }
+            }, 1500);
         }
     }
 }

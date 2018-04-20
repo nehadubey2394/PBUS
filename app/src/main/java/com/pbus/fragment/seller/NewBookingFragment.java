@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -48,6 +49,9 @@ public class NewBookingFragment extends Fragment implements View.OnClickListener
     private boolean isFromDate;
     private String sourceId = "", destId = "", fromDate = "", toDate = "";
     private int sPos = 0, dPos;
+    // variable to track event time
+    private long mLastClickTime = 0;
+
     private DatePickerDialog.OnDateSetListener datePicker = new DatePickerDialog.OnDateSetListener() {
         // the callback received when the user "sets" the Date in the
         // DatePickerDialog
@@ -57,21 +61,18 @@ public class NewBookingFragment extends Fragment implements View.OnClickListener
             selectedMonth += 1;
             month = (selectedMonth < 10) ? "0" + selectedMonth : String.valueOf(selectedMonth);
 
-            String date = day + "-" + month + "-" + selectedYear;
+            String date = day + "/" + month + "/" + selectedYear;
 
             if (isFromDate) {
                 tvFromDate.setText(date);
                 fromDate = tvFromDate.getText().toString();
+                tvToDate.setText("");
             }
             else {
-                if (fromDate.isEmpty()) {
-                    MyToast.getInstance(activity).customToast("Please select from date");
-                } else {
                     if (verifyDate(date, fromDate)) {
                         tvToDate.setText(date);
                         toDate = date;
                     }
-                }
             }
         }
     };
@@ -227,6 +228,12 @@ public class NewBookingFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onClick(View view) {
+        // Preventing multiple clicks, using threshold of 1/2 second
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 500) {
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime();
+
         switch (view.getId()){
             case R.id.tvSearch:
                 if (verifySearchData()) getBusList();
@@ -238,8 +245,12 @@ public class NewBookingFragment extends Fragment implements View.OnClickListener
                 break;
 
             case R.id.rlToDate:
-                isFromDate = false;
-                getDate();
+                if (!tvFromDate.getText().toString().isEmpty()) {
+                    isFromDate = false;
+                    getDate();
+                } else {
+                    MyToast.getInstance(activity).customToast("Please select date for From");
+                }
                 break;
 
             case R.id.imgExchange:
@@ -345,8 +356,8 @@ public class NewBookingFragment extends Fragment implements View.OnClickListener
 
     private boolean verifyDate(String toDate, String fromDate) {
         try {
-            Date fDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).parse(fromDate);
-            Date sDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).parse(toDate);
+            Date fDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(fromDate);
+            Date sDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).parse(toDate);
 
             if (sDate.before(fDate)) {
                 MyToast.getInstance(activity).customToast("Please select to date which is greater than from date");
@@ -367,10 +378,10 @@ public class NewBookingFragment extends Fragment implements View.OnClickListener
             MyToast.getInstance(activity).customToast("Please select destination location");
             return false;
         } else if (fromDate.isEmpty()) {
-            MyToast.getInstance(activity).customToast("Please select from date");
+            MyToast.getInstance(activity).customToast("Please select date for From");
             return false;
         } else if (toDate.isEmpty()) {
-            MyToast.getInstance(activity).customToast("Please select to date");
+            MyToast.getInstance(activity).customToast("Please select date for To");
             return false;
         } else return true;
     }
